@@ -1,3 +1,4 @@
+version: '3.8'
 
 services:
   product-checker:
@@ -11,6 +12,8 @@ services:
       - ./product_images:/app/product_images
       - ./templates:/app/templates
     environment:
+      - FLASK_APP=web_status.py
+      - FLASK_ENV=production
       - TZ=Europe/Stockholm
     ports:
       - "5000:5000"
