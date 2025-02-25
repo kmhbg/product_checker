@@ -1,17 +1,13 @@
 version: '3.8'
 
 services:
-  product-checker:
+  app:
     image: python:3.9-slim
     container_name: product-checker
     restart: unless-stopped
     command: >
       bash -c "pip install -r requirements.txt &&
                python web_status.py"
-    volumes:
-      - ${PWD}:/app
-      - product_images:/app/product_images
-      - templates:/app/templates
     working_dir: /app
     environment:
       - FLASK_APP=web_status.py
@@ -19,18 +15,19 @@ services:
       - TZ=Europe/Stockholm
     ports:
       - "5000:5000"
+    volumes:
+      - ./:/app
 
-  nginx:
+  web:
     image: nginx:alpine
     container_name: product-checker-nginx
     restart: unless-stopped
     ports:
       - "80:80"
     volumes:
-      - nginx_conf:/etc/nginx/conf.d
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
     depends_on:
-      - product-checker
+      - app
 
 volumes:
   product_images:
@@ -84,7 +81,6 @@ networks:
   gs1_network:
     driver: bridge
 
-volumes:
   validoo_share:
     driver_opts:
       type: cifs
