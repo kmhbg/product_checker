@@ -1,17 +1,31 @@
+
 services:
+  product-checker:
+    image: product-checker
+    build:
+      context: https://github.com/kmhbg/product_checker.git
+      dockerfile: Dockerfile
+    container_name: product-checker
+    restart: unless-stopped
+    volumes:
+      - ./product_images:/app/product_images
+      - ./templates:/app/templates
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - "5000:5000"
+
   nginx:
     image: nginx:alpine
+    container_name: product-checker-nginx
+    restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/ssl:/etc/nginx/ssl
+      - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-      - gs1-monitor
-    restart: always
-    networks:
-      - gs1_network
+      - product-checker
 
   gs1-monitor:
     build: .
