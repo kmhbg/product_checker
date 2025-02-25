@@ -140,6 +140,6 @@ if __name__ == '__main__':
     is_production = os.getenv('FLASK_ENV') == 'production'
     app.run(
         host='0.0.0.0',  # Viktigt för att lyssna på alla interfaces i Docker
-        port=5001,       # Måste matcha porten i docker-compose och nginx config
+        port=5000,       # Måste matcha porten i docker-compose och nginx config
         debug=not is_production
     )
