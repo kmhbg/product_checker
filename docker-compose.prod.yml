@@ -1,0 +1,68 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - gs1-monitor
+    restart: always
+    networks:
+      - gs1_network
+
+  gs1-monitor:
+    build: .
+    restart: always
+    expose:
+      - "5000"
+    volumes:
+      # Primär volym (SMB) med health check
+      - type: volume
+        source: validoo_share
+        target: /data
+        volume:
+          nocopy: true
+      # Fallback volym som alltid finns tillgänglig
+      - type: bind
+        source: ./product_images
+        target: /data_local
+    environment:
+      - FLASK_ENV=production
+      - FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
+      - WATCH_FOLDER=/data
+      - WATCH_FOLDER_FALLBACK=/data_local
+      - GS1_CLIENT_ID=${GS1_CLIENT_ID}
+      - GS1_CLIENT_SECRET=${GS1_CLIENT_SECRET}
+      - GS1_USERNAME=${GS1_USERNAME}
+      - GS1_PASSWORD=${GS1_PASSWORD}
+    networks:
+      - gs1_network
+    healthcheck:
+      test: 
+        - CMD
+        - test
+        - -d
+        - /data
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  gs1_network:
+    driver: bridge
+
+volumes:
+  validoo_share:
+    driver_opts:
+      type: cifs
+      o: "username=${SMB_USERNAME},password=${SMB_PASSWORD},soft"  # Lägg till 'soft' för att hantera timeout
+      device: "//172.16.16.75/home/validoo" 

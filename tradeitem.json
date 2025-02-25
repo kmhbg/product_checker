@@ -1,0 +1,3250 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "tradeitem.api",
+        "description": "2024-08-17 GetTII endpoints. Possibility to search for discontinued and withdrawn trade items in the product flow. Also extended search options for GPC code in Search endpoint.\n\nAffected endpoints:\n- /tradeitem.api/TradeItemInformation/getItemById\n- /tradeitem.api/TradeItemInformation/getItemByIdentification\n- /tradeitem.api/TradeItemInformation/search",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://validoopwe-apimanagement.azure-api.net/tradeitem"
+        }
+    ],
+    "paths": {
+        "/tradeitem.api/activate/gtins/verified": {
+            "post": {
+                "tags": [
+                    "VerifiedGTIN"
+                ],
+                "summary": "/tradeitem.api/activate/gtins/verified",
+                "description": "### General\nSearch by GTIN to get product information to verify a product.\n\n### Endpoint details\nSearch by GTIN to get product information to verify a product. Request can contain max 1000 GTINs. The response output is a combination of record information from GS1 Sweden and GS1 Registry Platform. Some products will only include GTIN, GPC and Product description due to privacy.\n\n### Request endpoint for integration\n<span style=\"color: #0000FF\">POST</span> https<nolink>://services.validoo.se/tradeitem.api/activate/gtins/verified",
+                "operationId": "post-tradeitem-api-activate-gtins-verified",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Length 14, numeric only."
+                            },
+                            "example": [
+                                "string"
+                            ]
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Activate.Verified.ApiVerifiedGtinInformation"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "validationErrors": [
+                                            {
+                                                "property": "string",
+                                                "index": 0,
+                                                "errors": [
+                                                    {
+                                                        "errorCode": "string",
+                                                        "message": "string"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "licenceKey": "string",
+                                        "licenceType": 0,
+                                        "gtin": "string",
+                                        "gtinRecordStatus": 0,
+                                        "gpcCategoryCode": "string",
+                                        "brandName": [
+                                            {
+                                                "language": "string",
+                                                "value": "string"
+                                            }
+                                        ],
+                                        "productDescription": [
+                                            {
+                                                "language": "string",
+                                                "value": "string"
+                                            }
+                                        ],
+                                        "productImageUrl": [
+                                            {
+                                                "language": "string",
+                                                "value": "string"
+                                            }
+                                        ],
+                                        "countryOfSaleCode": [
+                                            {
+                                                "numeric": "string",
+                                                "alpha2": "string",
+                                                "alpha3": "string"
+                                            }
+                                        ],
+                                        "netContent": [
+                                            {
+                                                "value": "string",
+                                                "unitCode": "string"
+                                            }
+                                        ],
+                                        "licenseeName": "string",
+                                        "dateCreated": "string",
+                                        "dateUpdated": "string",
+                                        "gS1Licence": {
+                                            "licenceKey": "string",
+                                            "licenceType": 0,
+                                            "licenseeName": "string",
+                                            "licenseeGLN": "string",
+                                            "licensingMO": {
+                                                "moName": "string"
+                                            },
+                                            "contactPoint": [
+                                                {
+                                                    "email": "string",
+                                                    "telephone": "string",
+                                                    "website": "string",
+                                                    "availableLanguage": [
+                                                        "string"
+                                                    ]
+                                                }
+                                            ],
+                                            "address": {
+                                                "postalName": {
+                                                    "language": "string",
+                                                    "value": "string"
+                                                },
+                                                "countryCode": "string",
+                                                "streetAddress": {
+                                                    "language": "string",
+                                                    "value": "string"
+                                                },
+                                                "streetAddressLine2": {
+                                                    "language": "string",
+                                                    "value": "string"
+                                                },
+                                                "streetAddressLine3": {
+                                                    "language": "string",
+                                                    "value": "string"
+                                                },
+                                                "streetAddressLine4": {
+                                                    "language": "string",
+                                                    "value": "string"
+                                                },
+                                                "postOfficeBoxNumber": "string",
+                                                "crossStreet": {
+                                                    "language": "string",
+                                                    "value": "string"
+                                                },
+                                                "addressSuburb": {
+                                                    "language": "string",
+                                                    "value": "string"
+                                                },
+                                                "addressLocality": {
+                                                    "language": "string",
+                                                    "value": "string"
+                                                },
+                                                "addressRegion": {
+                                                    "language": "string",
+                                                    "value": "string"
+                                                },
+                                                "postalCode": "string",
+                                                "countrySubdivisionCode": "string"
+                                            },
+                                            "primaryMO": {
+                                                "moName": "string"
+                                            },
+                                            "dateCreated": "string",
+                                            "dateUpdated": "string"
+                                        },
+                                        "linkset": {
+                                            "anchor": "string",
+                                            "itemDescription": "string"
+                                        },
+                                        "isComplete": true
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tradeitem.api/activate/gtins": {
+            "post": {
+                "tags": [
+                    "UploadGTIN"
+                ],
+                "summary": "/tradeitem.api/activate/gtins",
+                "description": "### General\nActivate, edit or inactivate your products. Products will be synchronized to GS1 Global Registry Platform, which makes the product searchable in Verified by GS1. The GTIN will be allocated which enables GTIN management. Recommended flow is to first post one or many GTIN(s) and save batchId from response. The post is performed asynchronously in a batch. Second step is to verify the posted item(s) via the feedback endpoint using the batchId.\n\n### Endpoint details\nCreate or modify one or many GTIN(s) and get a batchId as response. Request can contain max 1000 GTINs. Least required attributes to create an active GTIN is: GTIN, gtinStatus, productName, countryOfSaleCode, isTradeItemAConsumerUnit and isTradeItemABaseUnit. \n\n### Request endpoint for integration\n<span style=\"color: #0000FF\">POST</span> https<nolink>://services.validoo.se/tradeitem.api/activate/gtins\n",
+                "operationId": "post-tradeitem-api-activate-gtins",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecord"
+                                }
+                            },
+                            "example": [
+                                {
+                                    "gtin": "07309622201028",
+                                    "gtinStatus": "string",
+                                    "gpcCategoryCode": "string",
+                                    "brandName": [
+                                        {
+                                            "language": "string",
+                                            "value": "string"
+                                        }
+                                    ],
+                                    "subBrand": [
+                                        {
+                                            "language": "string",
+                                            "value": "string"
+                                        }
+                                    ],
+                                    "productName": [
+                                        {
+                                            "language": "string",
+                                            "value": "string"
+                                        }
+                                    ],
+                                    "variant": [
+                                        {
+                                            "language": "string",
+                                            "value": "string"
+                                        }
+                                    ],
+                                    "productImageUrl": [
+                                        {
+                                            "language": "string",
+                                            "value": "string"
+                                        }
+                                    ],
+                                    "netContent": [
+                                        {
+                                            "unitCode": "string",
+                                            "value": 0
+                                        }
+                                    ],
+                                    "countryOfSaleCode": [
+                                        "string"
+                                    ],
+                                    "isTradeItemAConsumerUnit": true,
+                                    "isTradeItemABaseUnit": true,
+                                    "child": [
+                                        {
+                                            "gtin": "07309622201028",
+                                            "quantity": 0
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Grp.Api.Models.Error"
+                                },
+                                "example": {
+                                    "errorCode": "string",
+                                    "message": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/tradeitem.api/activate/gtins/feedback/{batchId}": {
+            "get": {
+                "tags": [
+                    "UploadGTIN"
+                ],
+                "summary": "/tradeitem.api/activate/gtins/feedback/{batchId}",
+                "description": "### General\nActivate, edit or inactivate your products. Products will be synchronized to GS1 Global Registry Platform, which makes the product searchable in Verified by GS1. The GTIN will be allocated which enables GTIN management. Recommended flow is to first post one or many GTIN(s) and save batchId from response. The post is performed asynchronously in a batch. Second step is to verify the posted item(s) via the feedback endpoint using the batchId.\n\n### Endpoint details\nCheck status of uploaded GTIN(s) with batch identifier returned by POST GTIN endpoint. Should be specified in endpoint URL.\n\n### Request endpoint for integration\n<span style=\"color: #038A00\">GET</span> https<nolink>://services.validoo.se/tradeitem.api/activate/gtins/feedback/{batchId}",
+                "operationId": "get-tradeitem-api-activate-gtins-feedback-batchid",
+                "parameters": [
+                    {
+                        "name": "batchId",
+                        "in": "path",
+                        "description": "Format - uuid. Batch identifier returned by POST GTIN endpoint. Should be specified in endpoint URL.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.GtinOperationStatus"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "gtin": "string",
+                                        "code": 0,
+                                        "validationErrors": [
+                                            {
+                                                "property": "string",
+                                                "index": 0,
+                                                "errors": [
+                                                    {
+                                                        "errorCode": "string",
+                                                        "message": "string"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/tradeitem.api/activate/gtins/inactivate": {
+            "post": {
+                "tags": [
+                    "UploadGTIN"
+                ],
+                "summary": "/tradeitem.api/activate/gtins/inactivate",
+                "description": "### General\nActivate, edit or inactivate your products. Products will be synchronized to GS1 Global Registry Platform, which makes the product searchable in Verified by GS1. The GTIN will be allocated which enables GTIN management.\n\n### Endpoint details\nInactivate a GTIN record.\n\n### Request endpoint for integration\n<span style=\"color: #0000FF\">POST</span> https<nolink>://services.validoo.se/tradeitem.api/activate/gtins/inactivate",
+                "operationId": "post-tradeitem-api-activate-gtins-inactivate",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Validoo.TradeItem.Domain.Models.Activate.Api.InactivateGtinRecordRequest"
+                            },
+                            "example": {
+                                "gtin": "07309622201028"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.GtinOperationStatus"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "gtin": "string",
+                                        "code": 0,
+                                        "validationErrors": [
+                                            {
+                                                "property": "string",
+                                                "index": 0,
+                                                "errors": [
+                                                    {
+                                                        "errorCode": "string",
+                                                        "message": "string"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Grp.Api.Models.Error"
+                                },
+                                "example": {
+                                    "errorCode": "string",
+                                    "message": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/tradeitem.api/TradeItemInformation/getItemById": {
+            "get": {
+                "tags": [
+                    "GetTII"
+                ],
+                "summary": "/tradeitem.api/TradeItemInformation/getItemById",
+                "description": "### General\nRequest article information and get the entire Swedish subset for a trade item. Search with GTIN or other trade item attributes to get requested trade item information and related trade item hierarchies. Trade item information in response will differ depending on the relationship between supplier and GS1 Sweden. \n\n- Suggested implementation starts with a request to Search endpoint followed by a request to GetItemById using id from Search response. If GTIN, GLN and InformationProvider is known, GetItemByIdentification can be used. \n- The product flow returns the current version of the item. To retrieve data in this flow user should have a Receiver or Buyer service at GS1 Sweden. To request product data, use dataType = “Product”. The GDSN flow returns current and future items. To retrieve data in this flow the user should have a Buyer service at GS1 Sweden or be the informationProvider of the requested item. To get GDSN data, dataType = “Gdsn”. If dataType is not set, product data will be returned as this is the default dataType.\n- Parameter allowInvalid set to true can be used to ignore return trade items with validation errors or trade items pending validation. Parameter allowInvalid not used or set to false will act as a “regular” request and return default data. For GDSN flow allowInvalid will override allowCINPendingValidation parameter available in the GET endpoints. If the parameter allowInvalid is set to true, the parameter allowCINPendingValidation will be ignored. System will return trade items pending validation anyway.\n- Please note that information retrieved from the 'GetTII' endpoints must be stored locally. The customer product must not depend on direct integration with any 'GetTII' endpoints. \n\n### Endpoint details\nGet trade item by internal id which is returned via the Search endpoint. \n- The CIN (GS1 XML) in response is a base64 string and needs to be converted, default format is XML. For discontinued and withdrawn trade items, CIN is null except for discontinued trade items in GDSN flow.\n- Parameter dataRecipient can be used to get items addressed to you. If set, only addressed items will be returned.\n- Response attributes related to QA results will only be returned if the user has a Q-lab Buyer Service or is the InformationProvider of the requested item.\n- QA status datetime attributes are not returned if QA status is “N/A” or “Booked”. No dates exist to return.\n- Only relevant for GDSN flow: The parameter allowCINPendingValidation is used to set whether trade item with status “Pending validation” should be returned or not. If this parameter is set to true, these trade items will be returned. Status “Pending validation” means that the trade item hierarchy is awaiting quality assurance, this trade item could have status NOK in the future. Note: Default value is false. If a trade item is pending validation and allowCINPendingValidation is false or not been set, the response will be 202 Accepted with information “The item hierarchy is still pending validation, can’t be returned until validated OK.”. \n\n### Request endpoint for integration\n<span style=\"color: #038A00\">GET</span> https<nolink>://services.validoo.se/tradeitem.api/TradeItemInformation/getItemById",
+                "operationId": "get-tradeitem-api-tradeiteminformation-getitembyid",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Format - int32. Internal item id returned by Search endpoint",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "cinFormat",
+                        "in": "query",
+                        "description": "CIN format, possible values: XML or Text. Default value is XML.",
+                        "schema": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.CinFormat"
+                        }
+                    },
+                    {
+                        "name": "dataRecipient",
+                        "in": "query",
+                        "description": "GLNs set as data recipients for the trade item.",
+                        "schema": {
+                            "type": "string",
+                            "example": "7350076480033"
+                        }
+                    },
+                    {
+                        "name": "dataType",
+                        "in": "query",
+                        "description": "Data type, possible values: Product or GDSN. Default value is Product.",
+                        "schema": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.DataType"
+                        }
+                    },
+                    {
+                        "name": "allowCINPendingValidation",
+                        "in": "query",
+                        "description": "Ignore trade items pending validation. Default value is false. Only available in GDSN flow.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
+                        "name": "allowInvalid",
+                        "in": "query",
+                        "description": "Ignore trade items with validation errors or pending validation. Default value is false.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceGetItemResponse"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "cin": "string",
+                                        "gtin": "07309622201028",
+                                        "informationProviderGln": "7350076480033",
+                                        "informationProviderName": "string",
+                                        "targetMarketCountryCode": "string",
+                                        "targetMarketName": "string",
+                                        "brandOwnerGln": "7350076480033",
+                                        "brandOwnerName": "string",
+                                        "descriptiveSize": "string",
+                                        "descriptiveSizeDimension": "string",
+                                        "brandName": "string",
+                                        "gpcCode": "string",
+                                        "isTradeItemABaseUnit": true,
+                                        "isTradeItemAConsumerUnit": true,
+                                        "isTradeItemAnOrderableUnit": true,
+                                        "isTradeItemADisplayUnit": true,
+                                        "creationDateTime": "string",
+                                        "effectiveDateTime": "string",
+                                        "startAvailabilityDate": "string",
+                                        "consumerFirstAvailabilityDateTime": "string",
+                                        "lastChangeDateTime": "string",
+                                        "publicDateTime": "string",
+                                        "firstShipDateTime": "string",
+                                        "functionalName": "string",
+                                        "descriptionShort": "string",
+                                        "qaStatus": {
+                                            "digitalQAStatus": 0,
+                                            "digitalQAStatusChangeDateTime": "string",
+                                            "measurementQAStatus": 0,
+                                            "measurementQAStatusChangeDateTime": "string",
+                                            "barcodeQAStatus": 0,
+                                            "barcodeQAStatusChangeDateTime": "string",
+                                            "itemQAResultStatusChangeDateTime": "string"
+                                        },
+                                        "itemId": 0,
+                                        "status": "string",
+                                        "topItem": true,
+                                        "supplierArticleNumber": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tradeitem.api/TradeItemInformation/getItemByIdentification": {
+            "get": {
+                "tags": [
+                    "GetTII"
+                ],
+                "summary": "/tradeitem.api/TradeItemInformation/getItemByIdentification",
+                "description": "### General\nRequest article information and get the entire Swedish subset for a trade item. Search with GTIN or other trade item attributes to get requested trade item information and related trade item hierarchies. Trade item information in response will differ depending on the relationship between supplier and GS1 Sweden. \n\n- Suggested implementation starts with a request to Search endpoint followed by a request to GetItemById using id from Search response. If GTIN, GLN and InformationProvider is known, GetItemByIdentification can be used. \n- The product flow returns the current version of the item. To retrieve data in this flow user should have a Receiver or Buyer service at GS1 Sweden. To request product data, use dataType = “Product”. The GDSN flow returns current and future items. To retrieve data in this flow the user should have a Buyer service at GS1 Sweden or be the informationProvider of the requested item. To get GDSN data, dataType = “Gdsn”. If dataType is not set, product data will be returned as this is the default dataType.\n- Parameter allowInvalid set to true can be used to ignore return trade items with validation errors or trade items pending validation. Parameter allowInvalid not used or set to false will act as a “regular” request and return default data. For GDSN flow allowInvalid will override allowCINPendingValidation parameter available in the GET endpoints. If the parameter allowInvalid is set to true, the parameter allowCINPendingValidation will be ignored. System will return trade items pending validation anyway.\n- Please note that information retrieved from the 'GetTII' endpoints must be stored locally. The customer product must not depend on direct integration with any 'GetTII' endpoints. \n\n### Endpoint details\nSearch trade item via identification.\n- The least required parameters in request are GTIN, Information provider GLN and target market.\n- The CIN (GS1 XML) in response is a base64 string and needs to be converted, default format is XML. For discontinued and withdrawn trade items, CIN is null except for discontinued trade items in GDSN flow.\n- Parameter dataRecipient can be used to get items addressed to you. If set, only addressed items will be returned.\n- Response attributes related to QA results will only be returned if the user has a Q-lab Buyer Service or is the InformationProvider of the requested item.\n- QA status datetime attributes are not returned if QA status is “N/A” or “Booked”. No dates exist to return.\n- Only relevant for GDSN flow: The parameter allowCINPendingValidation is used to set whether trade item with status “Pending validation” should be returned or not. If this parameter is set to true, these trade items will be returned. Status “Pending validation” means that the trade item hierarchy is awaiting quality assurance, this trade item could have status NOK in the future. Note: Default value is false. If a trade item is pending validation and allowCINPendingValidation is false or not been set, the response will be 202 Accepted with information “The item hierarchy is still pending validation, can’t be returned until validated OK.”.\n\n### Request endpoint for integration\n<span style=\"color: #038A00\">GET</span> https<nolink>://services.validoo.se/tradeitem.api/TradeItemInformation/getItemByIdentification",
+                "operationId": "get-tradeitem-api-tradeiteminformation-getitembyidentification-gtin-gtin-inf",
+                "parameters": [
+                    {
+                        "name": "gtin",
+                        "in": "query",
+                        "description": "Global Trade Item Number, a GS1 number used to give products and packaging a globally unique identity.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "07309622201028"
+                        }
+                    },
+                    {
+                        "name": "informationProviderGln",
+                        "in": "query",
+                        "description": "The Global Location Number (GLN) of the Information Provider of the trade item.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "7350076480033"
+                        }
+                    },
+                    {
+                        "name": "targetMarket",
+                        "in": "query",
+                        "description": "The code of the country or other geographical area where the supplier has decided to make the item available for purchase, see [code list](https://gs1.se/en/guides/documentation/code-lists/t3783-target-market-country-code/).",
+                        "required": true,
+                        "schema": {
+                            "maxLength": 3,
+                            "minLength": 3,
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cinFormat",
+                        "in": "query",
+                        "description": "CIN format, possible values: XML or Text. Default value is XML.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.CinFormat"
+                        }
+                    },
+                    {
+                        "name": "dataRecipient",
+                        "in": "query",
+                        "description": "GLNs set as data recipients for the trade item.",
+                        "schema": {
+                            "type": "string",
+                            "example": "7350076480033"
+                        }
+                    },
+                    {
+                        "name": "onlyCurrentVersion",
+                        "in": "query",
+                        "description": "Ignore possible future versions of the trade item. Default value is false. Only available in GDSN flow.",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "includeDiscontinued",
+                        "in": "query",
+                        "description": "Include discontinued trade items. Default value is false. CIN is only returned for discontinued trade items in the GDSN flow.",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "includeWithdrawn",
+                        "in": "query",
+                        "description": "Include withdrawn trade items. Default value is false. CIN is not returned for withdrawn trade items. Only available in product flow.",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "dataType",
+                        "in": "query",
+                        "description": "Data type, possible values: Product or GDSN. Default value is Product.",
+                        "schema": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.DataType"
+                        }
+                    },
+                    {
+                        "name": "allowCINPendingValidation",
+                        "in": "query",
+                        "description": "Ignore trade items pending validation. Default value is false. Only available in GDSN flow.",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "allowInvalid",
+                        "in": "query",
+                        "description": "Ignore trade items with validation errors or pending validation. Default value is false.",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceGetItemResponse"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "cin": "string",
+                                        "gtin": "07309622201028",
+                                        "informationProviderGln": "7350076480033",
+                                        "informationProviderName": "string",
+                                        "targetMarketCountryCode": "string",
+                                        "targetMarketName": "string",
+                                        "brandOwnerGln": "7350076480033",
+                                        "brandOwnerName": "string",
+                                        "descriptiveSize": "string",
+                                        "descriptiveSizeDimension": "string",
+                                        "brandName": "string",
+                                        "gpcCode": "string",
+                                        "isTradeItemABaseUnit": true,
+                                        "isTradeItemAConsumerUnit": true,
+                                        "isTradeItemAnOrderableUnit": true,
+                                        "isTradeItemADisplayUnit": true,
+                                        "creationDateTime": "string",
+                                        "effectiveDateTime": "string",
+                                        "startAvailabilityDate": "string",
+                                        "consumerFirstAvailabilityDateTime": "string",
+                                        "lastChangeDateTime": "string",
+                                        "publicDateTime": "string",
+                                        "firstShipDateTime": "string",
+                                        "functionalName": "string",
+                                        "descriptionShort": "string",
+                                        "qaStatus": {
+                                            "digitalQAStatus": 0,
+                                            "digitalQAStatusChangeDateTime": "string",
+                                            "measurementQAStatus": 0,
+                                            "measurementQAStatusChangeDateTime": "string",
+                                            "barcodeQAStatus": 0,
+                                            "barcodeQAStatusChangeDateTime": "string",
+                                            "itemQAResultStatusChangeDateTime": "string"
+                                        },
+                                        "itemId": 0,
+                                        "status": "string",
+                                        "topItem": true,
+                                        "supplierArticleNumber": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tradeitem.api/TradeItemInformation/search": {
+            "post": {
+                "tags": [
+                    "GetTII"
+                ],
+                "summary": "/tradeitem.api/TradeItemInformation/search",
+                "description": "### General\nRequest article information and get the entire Swedish subset for a trade item. Search with GTIN or other trade item attributes to get requested trade item information and related trade item hierarchies. Trade item information in response will differ depending on the relationship between supplier and GS1 Sweden. \n\n- Suggested implementation starts with a request to Search endpoint followed by a request to GetItemById using id from Search response. If GTIN, GLN and InformationProvider is known, GetItemByIdentification can be used. \n- The product flow returns the current version of the item. To retrieve data in this flow user should have a Receiver or Buyer service at GS1 Sweden. To request product data, use dataType = “Product”. The GDSN flow returns current and future items. To retrieve data in this flow the user should have a Buyer service at GS1 Sweden or be the informationProvider of the requested item. To get GDSN data, dataType = “Gdsn”. If dataType is not set, product data will be returned as this is the default dataType.\n- Parameter allowInvalid set to true can be used to ignore return trade items with validation errors or trade items pending validation. Parameter allowInvalid not used or set to false will act as a “regular” request and return default data. For GDSN flow allowInvalid will override allowCINPendingValidation parameter available in the GET endpoints. If the parameter allowInvalid is set to true, the parameter allowCINPendingValidation will be ignored. System will return trade items pending validation anyway.\n- Please note that information retrieved from the 'GetTII' endpoints must be stored locally. The customer product must not depend on direct integration with any 'GetTII' endpoints. \n\n### Endpoint details\n\nSearch for trade item information. \n- Depending on input parameters Search can return a list and these will be iteratively returned.\n- To only request changed items, work with parameter lastChangeDateTime. If continuationToken is used, the input parameters will be checked against attributes lastChangeDateTime and publicDateTime (a trade item can go from private to public) for the trade item.\n- Parameters itemStatus, itemQAStatus, itemQAResult, itemQAResultStatus, assetCategory, itemTypes, datatype and codes related to packaging are enumerations listed in this documentation.\n- If no item status has been specified in request, only published trade items are returned as default. \n- Request parameters and response attributes related to QA results will only be applied and returned if the user has a Q-lab Buyer Service or is the InformationProvider of the requested item.\n- QA status datetime attributes are not returned if QA status is “N/A” or “Booked”. No dates exist to return.\n- Parameter brandOwnerName searches from the start of the brand owner name. It does not have to be an exact match.\n- If limit is not set, there is a default limit set.\n#### Paging results\nTo use paging mechanism, include the continuationToken from response the in next request, see 2nd application/json tab below by Request for \"example paging mechanism\". The continuationToken will make sure the next result set for the search is returned, eg the only attribute to update when fetching new result sets is the continuationToken. Search results retrieved via continuationToken attribute are ordered descending by “Last Change Date Time“/”Public Date Time” as default.\n\n### Request endpoint for integration\n<span style=\"color: #0000FF\">POST</span> https<nolink>://services.validoo.se/tradeitem.api/TradeItemInformation/search",
+                "operationId": "post-tradeitem-api-tradeiteminformation-search",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Validoo.TradeItem.Domain.Models.TradeItem.WebApiSearchRequest"
+                            },
+                            "example": {
+                                "informationProviderGlns": [
+                                    "7350076480033"
+                                ],
+                                "informationProviderNames": [
+                                    "string"
+                                ],
+                                "brandNames": [
+                                    "string"
+                                ],
+                                "functionalNames": [
+                                    "string"
+                                ],
+                                "gpcCategoryCodes": [
+                                    "string"
+                                ],
+                                "targetMarketCountryCodes": [
+                                    "string"
+                                ],
+                                "itemStatus": [
+                                    "published"
+                                ],
+                                "itemTypes": [
+                                    "Base"
+                                ],
+                                "dataRecipient": [
+                                    "7350076480033"
+                                ],
+                                "brandOwnerGln": "7350076480033",
+                                "brandOwnerName": "string",
+                                "dataType": 0,
+                                "onlyCurrentVersion": true,
+                                "onlyTopItems": true,
+                                "itemQAStatus": 0,
+                                "itemQAResultStatusChangeDateTimeFrom": "string",
+                                "itemQAResultStatusChangeDateTimeTo": "string",
+                                "assetCategory": 0,
+                                "itemQAResultStatus": 0,
+                                "allergenTypeCodes": [
+                                    "string"
+                                ],
+                                "allowInvalid": true,
+                                "includePublicHierarchy": true,
+                                "limit": 0,
+                                "continuationToken": "string",
+                                "gtins": [
+                                    "07309622201028"
+                                ],
+                                "shortDescriptions": [
+                                    "string"
+                                ],
+                                "isTradeItemADisplayUnit": true,
+                                "lastChangeDateTimeFrom": "string",
+                                "lastChangeDateTimeTo": "string",
+                                "supplierArticleNumbers": [
+                                    "string"
+                                ],
+                                "packagingMarkedLabelAccreditationCodes": [
+                                    "string"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceSearchResponse"
+                                },
+                                "example": {
+                                    "results": [
+                                        {
+                                            "gtin": "07309622201028",
+                                            "informationProviderGln": "7350076480033",
+                                            "informationProviderName": "string",
+                                            "targetMarketCountryCode": "string",
+                                            "targetMarketName": "string",
+                                            "brandOwnerGln": "7350076480033",
+                                            "brandOwnerName": "string",
+                                            "descriptiveSize": "string",
+                                            "descriptiveSizeDimension": "string",
+                                            "brandName": "string",
+                                            "gpcCode": "string",
+                                            "isTradeItemABaseUnit": true,
+                                            "isTradeItemAConsumerUnit": true,
+                                            "isTradeItemAnOrderableUnit": true,
+                                            "isTradeItemADisplayUnit": true,
+                                            "creationDateTime": "string",
+                                            "effectiveDateTime": "string",
+                                            "startAvailabilityDate": "string",
+                                            "consumerFirstAvailabilityDateTime": "string",
+                                            "lastChangeDateTime": "string",
+                                            "publicDateTime": "string",
+                                            "firstShipDateTime": "string",
+                                            "functionalName": "string",
+                                            "descriptionShort": "string",
+                                            "qaStatus": {
+                                                "digitalQAStatus": 0,
+                                                "digitalQAStatusChangeDateTime": "string",
+                                                "measurementQAStatus": 0,
+                                                "measurementQAStatusChangeDateTime": "string",
+                                                "barcodeQAStatus": 0,
+                                                "barcodeQAStatusChangeDateTime": "string",
+                                                "itemQAResultStatusChangeDateTime": "string"
+                                            },
+                                            "itemId": 0,
+                                            "status": "string",
+                                            "topItem": true,
+                                            "supplierArticleNumber": "string"
+                                        }
+                                    ],
+                                    "continuationToken": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tradeitem.api/TradeItemInformation/qaRuleResultByIdentification": {
+            "get": {
+                "tags": [
+                    "GetTII"
+                ],
+                "summary": "/tradeitem.api/TradeItemInformation/qaRuleResultByIdentification",
+                "description": "### Endpoint details\nGet QA rule result for an item based on identification (GTIN, GLN, Target market). This endpoint is only available in the GDSN flow. \n- The response contains all different itemQAResultStatuses, their itemQAStatus and date. In addition, all applied rules, result, and date are included. \n- This endpoint is only valid if the user has a Q-lab Buyer service or is the InformationProvider of the requested item.\n- If no QA has been booked for the item, the result will be an empty array.\n- QA status datetime attributes are not returned if QA status is “N/A” or “Booked”. No dates exist to return. \n- Please note that information retrieved from the 'GetTII' endpoints must be stored locally. The customer product must not depend on direct integration with any 'GetTII' endpoints. \n\n### Request endpoint for integration\n<span style=\"color: #038A00\">GET</span> https<nolink>://services.validoo.se/tradeitem.api/TradeItemInformation/qaRuleResultByIdentification\n",
+                "operationId": "get-tradeitem-api-tradeiteminformation-qaruleresultbyidentification-gtin-gti",
+                "parameters": [
+                    {
+                        "name": "gtin",
+                        "in": "query",
+                        "description": "Global Trade Item Number, a GS1 number used to give products and packaging a globally unique identity.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "07309622201028"
+                        }
+                    },
+                    {
+                        "name": "informationProviderGln",
+                        "in": "query",
+                        "description": "The Global Location Number (GLN) of the Information Provider of the trade item.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "7350076480033"
+                        }
+                    },
+                    {
+                        "name": "targetMarketCountryCode",
+                        "in": "query",
+                        "description": "The code of the country or other geographical area where the supplier has decided to make the item available for purchase, see [code list](https://gs1.se/en/guides/documentation/code-lists/t3783-target-market-country-code/).",
+                        "required": true,
+                        "schema": {
+                            "maxLength": 3,
+                            "minLength": 3,
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceGetQARuleResultByIdentificationResponse"
+                                    },
+                                    "description": "The response contains all different itemQAResultStatuses, their itemQAStatus and date. In addition, all applied rules, result, and date are included."
+                                },
+                                "example": {
+                                    "results": [
+                                        {
+                                            "digitalQAStatus": 0,
+                                            "digitalQAStatusChangeDateTime": "string",
+                                            "digitalQARuleResults": [
+                                                {
+                                                    "ruleId": "string",
+                                                    "ruleDescription": "string",
+                                                    "ruleResult": 0,
+                                                    "itemQARuleResultChangeDateTime": "string"
+                                                }
+                                            ],
+                                            "measurementQAStatus": 0,
+                                            "measurementQAStatusChangeDateTime": "string",
+                                            "measurementQARuleResults": [
+                                                {
+                                                    "ruleId": "string",
+                                                    "ruleDescription": "string",
+                                                    "ruleResult": 0,
+                                                    "itemQARuleResultChangeDateTime": "string"
+                                                }
+                                            ],
+                                            "barcodeQAStatus": 0,
+                                            "barcodeQAStatusChangeDateTime": "string",
+                                            "barcodeQARuleResults": [
+                                                {
+                                                    "ruleId": "string",
+                                                    "ruleDescription": "string",
+                                                    "ruleResult": 0,
+                                                    "itemQARuleResultChangeDateTime": "string"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tradeitem.api/TradeItemInformation/parentOfTradeItem": {
+            "get": {
+                "tags": [
+                    "GetTII"
+                ],
+                "summary": "/tradeitem.api/TradeItemInformation/parentOfTradeItem",
+                "description": "### Endpoint details\nGet parent trade item data for a trade item. Depending on which data type is used, different levels of hierarchy will be returned.\n\n- To get product data, use dataType = “Product”. To get GDSN data, dataType = “Gdsn”. If dataType is not set, product data will still be returned as this is the default dataType.\n- For the product flow, only parent trade items up to the requester’s access limit are returned. For GDSN the full parent hierarchy is returned.\n- The output attribute referencesRequestedGtin is true if this item is the closest parent to the requested GTIN and false if there are any trade item(s) in between the requested GTIN and this trade item. \n- Please note that information retrieved from the 'GetTII' endpoints must be stored locally. The customer product must not depend on direct integration with any 'GetTII' endpoints. \n\n### Request endpoint for integration\n<span style=\"color: #038A00\">GET</span> https<nolink>://services.validoo.se/tradeitem.api/TradeItemInformation/parentOfTradeItem",
+                "operationId": "get-tradeitem-api-tradeiteminformation-parentoftradeitem-gtin-gtin",
+                "parameters": [
+                    {
+                        "name": "gtin",
+                        "in": "query",
+                        "description": "Global Trade Item Number, a GS1 number used to give products and packaging a globally unique identity.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "informationProviderGln",
+                        "in": "query",
+                        "description": "The Global Location Number (GLN) of the Information Provider of the trade item.",
+                        "schema": {
+                            "type": "string",
+                            "example": "7350076480033"
+                        }
+                    },
+                    {
+                        "name": "targetMarketCountryCode",
+                        "in": "query",
+                        "description": "The code of the country or other geographical area where the supplier has decided to make the item available for purchase, see [code list](https://gs1.se/en/guides/documentation/code-lists/t3783-target-market-country-code/).",
+                        "schema": {
+                            "maxLength": 3,
+                            "minLength": 3,
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "includeDiscontinued",
+                        "in": "query",
+                        "description": "Include discontinued trade items. Default value is false. Only available in GDSN flow.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
+                        "name": "dataType",
+                        "in": "query",
+                        "description": "Data type, possible values: Product or GDSN. Default value is Product.",
+                        "schema": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.DataType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceGetTradeItemParentsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tradeitem.api/TradeItemInformation/CIN": {
+            "post": {
+                "tags": [
+                    "UploadCIN"
+                ],
+                "summary": "/tradeitem.api/TradeItemInformation/CIN",
+                "description": "### General\nPublish and/or validate trade item information to share with buyers. Create XML-files (CIN), upload and get result.\n\n### Endpoint details\nUpload CIN via this endpoint and get a returned taskId in response to use in the CIN result endpoint.\n\n### Request endpoint for integration\n<span style=\"color: #0000FF\">POST</span> https<nolink>://services.validoo.se/tradeitem.api/TradeItemInformation/CIN",
+                "operationId": "post-tradeitem-api-tradeiteminformation-cin",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinRequest"
+                            },
+                            "example": {
+                                "content": "string",
+                                "operation": 0,
+                                "additionalDataRecipients": [
+                                    "7350076480033"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinResponse"
+                                },
+                                "example": {
+                                    "taskId": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/tradeitem.api/TradeItemInformation/CINresult/{taskId}": {
+            "get": {
+                "tags": [
+                    "UploadCIN"
+                ],
+                "summary": "/tradeitem.api/TradeItemInformation/CINresult/{taskId}",
+                "description": "### General\nPublish and/or validate trade item information to share with buyers. Create XML-files (CIN), upload and get result.\n\n### Endpoint details\nUse taskId to see the result of uploaded CIN.\n\n### Request endpoint for integration\n<span style=\"color: #038A00\">GET</span> https<nolink>://services.validoo.se/tradeitem.api/TradeItemInformation/CINresult/{taskId}",
+                "operationId": "get-tradeitem-api-tradeiteminformation-cinresult-taskid",
+                "parameters": [
+                    {
+                        "name": "taskId",
+                        "in": "path",
+                        "description": "Format - uuid.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceCinUploadResultResponse"
+                                },
+                                "example": {
+                                    "messageId": "string",
+                                    "errors": [
+                                        {
+                                            "type": 0,
+                                            "code": "string",
+                                            "definition": "string",
+                                            "errorMessages": [
+                                                {
+                                                    "message": "string",
+                                                    "languageCode": "string"
+                                                }
+                                            ],
+                                            "attributeXPath": "string",
+                                            "attributeNumber": "string",
+                                            "attributeBmsId": 0,
+                                            "gtin": "07309622201028"
+                                        }
+                                    ],
+                                    "transactions": [
+                                        {
+                                            "transactionId": "string",
+                                            "errors": [
+                                                {
+                                                    "type": 0,
+                                                    "code": "string",
+                                                    "definition": "string",
+                                                    "errorMessages": [
+                                                        {
+                                                            "message": "string",
+                                                            "languageCode": "string"
+                                                        }
+                                                    ],
+                                                    "attributeXPath": "string",
+                                                    "attributeNumber": "string",
+                                                    "attributeBmsId": 0,
+                                                    "gtin": "07309622201028"
+                                                }
+                                            ],
+                                            "documents": [
+                                                {
+                                                    "documentId": "string",
+                                                    "errors": [
+                                                        {
+                                                            "type": 0,
+                                                            "code": "string",
+                                                            "definition": "string",
+                                                            "errorMessages": [
+                                                                {
+                                                                    "message": "string",
+                                                                    "languageCode": "string"
+                                                                }
+                                                            ],
+                                                            "attributeXPath": "string",
+                                                            "attributeNumber": "string",
+                                                            "attributeBmsId": 0,
+                                                            "gtin": "07309622201028"
+                                                        }
+                                                    ],
+                                                    "dataRecipients": [
+                                                        {
+                                                            "gln": "7350076480033",
+                                                            "original": true,
+                                                            "errors": [
+                                                                {
+                                                                    "type": 0,
+                                                                    "code": "string",
+                                                                    "definition": "string",
+                                                                    "errorMessages": [
+                                                                        {
+                                                                            "message": "string",
+                                                                            "languageCode": "string"
+                                                                        }
+                                                                    ],
+                                                                    "attributeXPath": "string",
+                                                                    "attributeNumber": "string",
+                                                                    "attributeBmsId": 0,
+                                                                    "gtin": "07309622201028"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Validoo.Api.Models.Errors.ErrorInformation": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "params": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "exception": {
+                        "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ExceptionInformation"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Api.Models.Errors.ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "traceId": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorInformation"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Api.Models.Errors.ExceptionData": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "value": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Api.Models.Errors.ExceptionInformation": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "stackTrace": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ExceptionData"
+                        },
+                        "nullable": true
+                    },
+                    "innerException": {
+                        "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ExceptionInformation"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Grp.Api.Models.Address": {
+                "type": "object",
+                "properties": {
+                    "postalName": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                    },
+                    "countryCode": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "streetAddress": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                    },
+                    "streetAddressLine2": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                    },
+                    "streetAddressLine3": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                    },
+                    "streetAddressLine4": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                    },
+                    "postOfficeBoxNumber": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "crossStreet": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                    },
+                    "addressSuburb": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                    },
+                    "addressLocality": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                    },
+                    "addressRegion": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                    },
+                    "postalCode": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "countrySubdivisionCode": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Grp.Api.Models.ContactPoint": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "telephone": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "website": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "availableLanguage": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Grp.Api.Models.CountryCode": {
+                "type": "object",
+                "properties": {
+                    "numeric": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "alpha2": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "alpha3": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "The parameter country is defined using the ISO-3166-1 standard. Possible formats returned are 3-digit numeric, Alpha-2, Alpha-3."
+            },
+            "Validoo.Grp.Api.Models.Error": {
+                "type": "object",
+                "properties": {
+                    "errorCode": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Grp.Api.Models.GS1Licence": {
+                "type": "object",
+                "properties": {
+                    "licenceKey": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "licenceType": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.LicenceType"
+                    },
+                    "licenseeName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "licenseeGLN": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "licensingMO": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MemberOrganization"
+                    },
+                    "contactPoint": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Grp.Api.Models.ContactPoint"
+                        },
+                        "description": "Details of GS1 licensee contact point(s)",
+                        "nullable": true
+                    },
+                    "address": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.Address"
+                    },
+                    "primaryMO": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MemberOrganization"
+                    },
+                    "dateCreated": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "dateUpdated": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Grp.Api.Models.GtinOperationStatus": {
+                "type": "object",
+                "properties": {
+                    "gtin": {
+                        "type": "string",
+                        "description": "The GTIN the operation status is returned for.",
+                        "nullable": true
+                    },
+                    "code": {
+                        "type": "integer",
+                        "description": "Feedback status code. 1 - Created, 2 - Modified, 5- Failed",
+                        "format": "int32"
+                    },
+                    "validationErrors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Grp.Api.Models.ValidationError"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Grp.Api.Models.GtinRecordStatus": {
+                "enum": [
+                    "ACTIVE",
+                    "DISCONTINUED",
+                    "INACTIVE",
+                    "NORECORD"
+                ],
+                "type": "string",
+                "description": "Status of the GTIN record, possible values: ACTIVE, DISCONTINUED, INACTIVE, NORECORD."
+            },
+            "Validoo.Grp.Api.Models.LicenceType": {
+                "enum": [
+                    "GCP",
+                    "GLN",
+                    "GTIN",
+                    "GTIN8"
+                ],
+                "type": "string",
+                "description": "Licence types; GCP-GS1 company prefix, GLN-Global Location Number, GTIN, GTIN8"
+            },
+            "Validoo.Grp.Api.Models.Linkset": {
+                "required": [
+                    "anchor",
+                    "itemDescription"
+                ],
+                "type": "object",
+                "properties": {
+                    "anchor": {
+                        "items": {
+                            "$ref": "#/components/schemas/Licence.GS1ResolverLink"
+                        },
+                        "description": "A URL formed using the application identifier and identification key, based on the Digital Link standard."
+                    },
+                    "itemDescription": {
+                        "type": "string",
+                        "description": "Describes the product, location, or asset the link is associated with."
+                    }
+                },
+                "additionalProperties": {
+                    "minItems": 1,
+                    "type": "object",
+                    "items": {
+                        "$ref": "#/components/schemas/Link"
+                    },
+                    "example": {
+                        "https://gs1.org/voc/hasRetailers/": [
+                            {
+                                "href": "https://dalgiardino.com/risotto-rice-with-mushrooms/",
+                                "title": "Product information",
+                                "type": "text/html",
+                                "hreflang": [
+                                    "en",
+                                    "es",
+                                    "vi",
+                                    "ja"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "Licence.GS1ResolverLink": {
+                "pattern": "^https:\\/\\/id.gs1.org\\/\\d{2,4}\\/\\d{14}[\\/?]?.*$",
+                "type": "string",
+                "format": "uri",
+                "example": "https://id.gs1.org/01/00627697100341"
+            },
+            "Link": {
+                "required": [
+                    "href"
+                ],
+                "type": "object",
+                "properties": {
+                    "href": {
+                        "type": "string",
+                        "description": "TargetURL that specifies URL for the product, location, or asset.",
+                        "format": "uri"
+                    },
+                    "fwqs": {
+                        "type": "boolean",
+                        "description": "True or False values of fwqs specify if query strings appended to the targetUrl can be communicated to the destination webserver (say a mobile phone app).",
+                        "nullable": true
+                    },
+                    "public": {
+                        "type": "boolean",
+                        "description": "Specifies access control to this link.",
+                        "nullable": true
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Linktype validated against a linkType from the GS1 Web Vocabulary. For information about GS1 link types, please refer to [linkTypes](https://www.gs1.org/voc/?show=linktypes).",
+                        "format": "mimetype",
+                        "nullable": true
+                    },
+                    "context": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Target markets or countries of sale for which the link''s resources are relevant.",
+                        "nullable": true
+                    },
+                    "hreflang": {
+                        "type": "array",
+                        "items": {
+                            "pattern": "^[a-z]{2}$",
+                            "type": "string",
+                            "format": "locale"
+                        },
+                        "description": "Language of the content the targetURL.",
+                        "nullable": true
+                    },
+                    "title": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                }
+            },
+            "Validoo.Grp.Api.Models.Measurement": {
+                "type": "object",
+                "properties": {
+                    "value": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "unitCode": {
+                        "type": "string",
+                        "description": "Measurement unit code, see [code list measurement unit code T3780](https://gs1.se/en/guides/documentation/codelists/t3780-measurement-unit-code/). The active codes for Sweden are marked with an ‘X’ in column “Used in Sweden”. Local Swedish free text attribute “löpmeter” may also be returned.",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Grp.Api.Models.MemberOrganization": {
+                "type": "object",
+                "properties": {
+                    "moName": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "The MO that is managing the identification keys associated with a licence."
+            },
+            "Validoo.Grp.Api.Models.MultiLanguageValue": {
+                "type": "object",
+                "properties": {
+                    "language": {
+                        "type": "string",
+                        "description": "Language tags consist of a mandatory language code. Supported language codes are all 2-character codes listed for the ISO 639-1:2002 standard (ISO 639 Part 1).",
+                        "nullable": true
+                    },
+                    "value": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Grp.Api.Models.ValidationError": {
+                "type": "object",
+                "properties": {
+                    "property": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "index": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Grp.Api.Models.Error"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Activate.Verified.ApiVerifiedGtinInformation": {
+                "type": "object",
+                "properties": {
+                    "validationErrors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Grp.Api.Models.ValidationError"
+                        },
+                        "nullable": true
+                    },
+                    "licenceKey": {
+                        "type": "string",
+                        "description": "GS1 licence key of the brand owner",
+                        "nullable": true
+                    },
+                    "licenceType": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.LicenceType"
+                    },
+                    "gtin": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "gtinRecordStatus": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.GtinRecordStatus"
+                    },
+                    "gpcCategoryCode": {
+                        "type": "string",
+                        "description": "Global Product Classification codes, see [GPC browser](https://gpc-browser.gs1.org)",
+                        "nullable": true
+                    },
+                    "brandName": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                        },
+                        "nullable": true
+                    },
+                    "productDescription": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                        },
+                        "nullable": true
+                    },
+                    "productImageUrl": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Grp.Api.Models.MultiLanguageValue"
+                        },
+                        "nullable": true
+                    },
+                    "countryOfSaleCode": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Grp.Api.Models.CountryCode"
+                        },
+                        "nullable": true
+                    },
+                    "netContent": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Grp.Api.Models.Measurement"
+                        },
+                        "nullable": true
+                    },
+                    "licenseeName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "dateCreated": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "dateUpdated": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "gS1Licence": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.GS1Licence"
+                    },
+                    "linkset": {
+                        "$ref": "#/components/schemas/Validoo.Grp.Api.Models.Linkset"
+                    },
+                    "isComplete": {
+                        "type": "boolean",
+                        "description": "Status isComplete is true when GTIN records has all mandatory fields filled out and image exist. This output parameter is not returned for GTIN-14 (local GTIN record).",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Enums.ProductType": {
+                "enum": [
+                    "Base",
+                    "Consumer",
+                    "Orderable",
+                    "Display",
+                    "Other"
+                ],
+                "type": "string"
+            },
+            "Validoo.TradeItem.Api.Models.Enums.TradeItemVersionStatus": {
+                "enum": [
+                    "published",
+                    "discontinued",
+                    "withdrawn"
+                ],
+                "type": "string",
+                "description": "Status of the trade item, published, discontinued or withdrawn. A discontinued trade item is removed from the market, a withdrawn trade item is unpublished for it's recipients. In the product flow CIN is null for discontinued and withdrawn trade items. GDSN flow returns CIN for discontinued trade items, withdrawn trade items are not returned at all."
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.CinFormat": {
+                "enum": [
+                    "Xml",
+                    "Text"
+                ],
+                "type": "string"
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.DataType": {
+                "enum": [
+                    "Product",
+                    "Gdsn"
+                ],
+                "type": "string",
+                "description": "Data type, possible values: Product or GDSN. Default value is Product. GDSN should only be used if required access exists."
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.UploadCinOperation": {
+                "enum": [
+                    "Validate",
+                    "StoreAsDraft",
+                    "ValidateAndStoreAsDraft",
+                    "ValidateAndPublish"
+                ],
+                "type": "string",
+                "description": "CIN operations:\n\nValidate - Validate uploaded CIN message\n\nStoreAsDraft -  Store uploaded CIN message as draft trade item versions without validation\n\nValidateAndStoreAsDraft -  Validate and store upload CIN message as draft trade item versions\n\nValidateAndPublish - Validate and publish CIN message."
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceAssetCategory": {
+                "enum": [
+                    "DataQuality",
+                    "Barcode"
+                ],
+                "type": "string",
+                "description": "Asset category, possible values: DataQuality or Barcode. DataQuality is a combination of status results for Digital QA and Measurement QA, both must be OK for OK to be returned."
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceCinUploadDataRecipientResult": {
+                "type": "object",
+                "properties": {
+                    "gln": {
+                        "type": "string",
+                        "description": "GLN of a Data Recipient",
+                        "nullable": true,
+                        "example": "7350076480033"
+                    },
+                    "original": {
+                        "type": "boolean",
+                        "description": "Indicates that it was original Data Recipient addressed in uploaded CIN XML message."
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinError"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "Data Recipient processing results. Data Recipient specified in uploaded CIN XML message and each Data Recipient in input attribute “additionalDataRecipients” will have its own processing result record."
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceCinUploadDocumentResult": {
+                "type": "object",
+                "properties": {
+                    "documentId": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinError"
+                        },
+                        "nullable": true
+                    },
+                    "dataRecipients": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceCinUploadDataRecipientResult"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceCinUploadResultResponse": {
+                "type": "object",
+                "properties": {
+                    "messageId": {
+                        "type": "string",
+                        "description": "Base64 encoded CIN XML message.",
+                        "nullable": true
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinError"
+                        },
+                        "nullable": true
+                    },
+                    "transactions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceCinUploadTransactionResult"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceCinUploadTransactionResult": {
+                "type": "object",
+                "properties": {
+                    "transactionId": {
+                        "type": "string",
+                        "description": "Transaction GDSN identifier. System will return the value specified in uploaded CIN XML message. This value can be saved by a caller to trace results to a specific transaction in the message.",
+                        "nullable": true
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinError"
+                        },
+                        "nullable": true
+                    },
+                    "documents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceCinUploadDocumentResult"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceGetItemResponse": {
+                "type": "object",
+                "properties": {
+                    "cin": {
+                        "type": "string",
+                        "description": "The CIN (GS1 XML) in response is a base64 string and needs to be converted, default format is XML. For discontinued and withdrawn trade items, CIN is null except for discontinued trade items in GDSN flow.",
+                        "nullable": true
+                    },
+                    "gtin": {
+                        "type": "string",
+                        "description": "Global Trade Item Number, a GS1 number used to give products and packaging a globally unique identity.",
+                        "nullable": true,
+                        "example": "07309622201028"
+                    },
+                    "informationProviderGln": {
+                        "type": "string",
+                        "description": "The Global Location Number (GLN) of the Information Provider of the trade item.",
+                        "nullable": true,
+                        "example": "7350076480033"
+                    },
+                    "informationProviderName": {
+                        "type": "string",
+                        "description": "The name of the Information Provider of the trade item.",
+                        "nullable": true
+                    },
+                    "targetMarketCountryCode": {
+                        "type": "string",
+                        "description": "The code of the country or other geographical area where the supplier has decided to make the item available for purchase, see [code list](https://gs1.se/en/guides/documentation/code-lists/t3783-target-market-country-code/).",
+                        "nullable": true
+                    },
+                    "targetMarketName": {
+                        "type": "string",
+                        "description": "The name of the country or other geographical area where the supplier has decided to make the item available for purchase, see [code list](https://gs1.se/en/guides/documentation/code-lists/t3783-target-market-country-code/).",
+                        "nullable": true
+                    },
+                    "brandOwnerGln": {
+                        "type": "string",
+                        "description": "If the product is manufactured for another company under the recipient's trademark, this is the recipient's GLN.",
+                        "nullable": true,
+                        "example": "7350076480033"
+                    },
+                    "brandOwnerName": {
+                        "type": "string",
+                        "description": "If the product is manufactured for another company under the recipient's trademark, this is the recipient's name.",
+                        "nullable": true
+                    },
+                    "descriptiveSize": {
+                        "type": "string",
+                        "description": "Deprecated, replaced by descriptiveSizeDimension.",
+                        "nullable": true,
+                        "deprecated": true
+                    },
+                    "descriptiveSizeDimension": {
+                        "type": "string",
+                        "description": "Text description of the specified size of the trade item.",
+                        "nullable": true
+                    },
+                    "brandName": {
+                        "type": "string",
+                        "description": "The brand name of the product that appears on the consumer package.",
+                        "nullable": true
+                    },
+                    "gpcCode": {
+                        "type": "string",
+                        "description": "GPC brick level code for the trade item, see [GPC browser](https://gpc-browser.gs1.org/).",
+                        "nullable": true
+                    },
+                    "isTradeItemABaseUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a base unit."
+                    },
+                    "isTradeItemAConsumerUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a consumer unit."
+                    },
+                    "isTradeItemAnOrderableUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is an orderable unit."
+                    },
+                    "isTradeItemADisplayUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a display unit."
+                    },
+                    "creationDateTime": {
+                        "type": "string",
+                        "description": "Date time when trade item information was created.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "effectiveDateTime": {
+                        "type": "string",
+                        "description": "Date time from when trade item information begins to apply.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "startAvailabilityDate": {
+                        "type": "string",
+                        "description": "Date time from when trade item is available for the buyer to order.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "consumerFirstAvailabilityDateTime": {
+                        "type": "string",
+                        "description": "Date time from when trade item is allowed to be sold to consumers.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "lastChangeDateTime": {
+                        "type": "string",
+                        "description": "Date time when trade item information was last changed.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "firstShipDateTime": {
+                        "type": "string",
+                        "description": "Date time when trade item can first be delivered to the buyer.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "functionalName": {
+                        "type": "string",
+                        "description": "The category to which the product belongs.",
+                        "nullable": true
+                    },
+                    "descriptionShort": {
+                        "type": "string",
+                        "description": "A free form short length description of the trade item that can be used to identify the trade item at point of sale.",
+                        "nullable": true
+                    },
+                    "qaStatus": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemQAStatusInformation"
+                    },
+                    "itemId": {
+                        "type": "integer",
+                        "description": "The internal item id for the trade item.",
+                        "format": "int32"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Status of the trade item, published, discontinued or withdrawn. A discontinued trade item is removed from the market, a withdrawn trade item is unpublished for it's recipients. In the product flow CIN is null for discontinued and withdrawn trade items. GDSN flow returns CIN for discontinued trade items, withdrawn trade items are not returned at all.",
+                        "nullable": true
+                    },
+                    "topItem": {
+                        "type": "boolean",
+                        "description": "True if the trade item is considered to be a top item, based on access rights."
+                    },
+                    "supplierArticleNumber": {
+                        "type": "string",
+                        "description": "Possible additional Trade Item Identification for the trade item.",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceGetQARuleResultByIdentificationData": {
+                "type": "object",
+                "properties": {
+                    "digitalQAStatus": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemQAStatus"
+                    },
+                    "digitalQAStatusChangeDateTime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "digitalQARuleResults": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceQARuleResult"
+                        },
+                        "nullable": true
+                    },
+                    "measurementQAStatus": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemQAStatus"
+                    },
+                    "measurementQAStatusChangeDateTime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "measurementQARuleResults": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceQARuleResult"
+                        },
+                        "nullable": true
+                    },
+                    "barcodeQAStatus": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemQAStatus"
+                    },
+                    "barcodeQAStatusChangeDateTime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "barcodeQARuleResults": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceQARuleResult"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceGetQARuleResultByIdentificationResponse": {
+                "type": "object",
+                "properties": {
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceGetQARuleResultByIdentificationData"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceGetTradeItemParentsResponse": {
+                "type": "object",
+                "properties": {
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceGetTradeItemParentsTradeItem"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceGetTradeItemParentsTradeItem": {
+                "type": "object",
+                "properties": {
+                    "gtin": {
+                        "type": "string",
+                        "description": "Global Trade Item Number, a GS1 number used to give products and packaging a globally unique identity.",
+                        "nullable": true,
+                        "example": "07309622201028"
+                    },
+                    "informationProviderGln": {
+                        "type": "string",
+                        "description": "The Global Location Number (GLN) of the Information Provider of the trade item.",
+                        "nullable": true,
+                        "example": "7350076480033"
+                    },
+                    "targetMarketCountryCode": {
+                        "type": "string",
+                        "description": "The code of the country or other geographical area where the supplier has decided to make the item available for purchase, see [code list](https://gs1.se/en/guides/documentation/code-lists/t3783-target-market-country-code/).",
+                        "nullable": true
+                    },
+                    "isTradeItemADespatchUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a despatch unit, this is usually a pallet."
+                    },
+                    "isTradeItemAConsumerUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a consumer unit."
+                    },
+                    "isTradeItemAnOrderableUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is an orderable unit."
+                    },
+                    "isTradeItemAnDisplayUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a display unit."
+                    },
+                    "isTradeItemAnBaseUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a base unit."
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Enums.TradeItemVersionStatus"
+                    },
+                    "childTradeItems": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceGetTradeItemParentsTradeItem"
+                        },
+                        "nullable": true
+                    },
+                    "referencesRequestedGtin": {
+                        "type": "boolean",
+                        "description": "True if this item is the closest parent to the requested GTIN and false if there are any trade item(s) in between the requested GTIN and this trade item."
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceQARuleResult": {
+                "type": "object",
+                "properties": {
+                    "ruleId": {
+                        "type": "string",
+                        "description": "QA rule number (identifier)",
+                        "nullable": true
+                    },
+                    "ruleDescription": {
+                        "type": "string",
+                        "description": "QA rule description",
+                        "nullable": true
+                    },
+                    "ruleResult": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceRuleQAStatus"
+                    },
+                    "itemQARuleResultChangeDateTime": {
+                        "type": "string",
+                        "description": "Date and time QA rule QA status was changed",
+                        "format": "date-time"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceQAServiceStatus": {
+                "enum": [
+                    "DigitalQAStatus",
+                    "MeasurementQAStatus",
+                    "BarcodeQAStatus"
+                ],
+                "type": "string",
+                "description": "ItemQAStatus, refers to type of QA status."
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceRuleQAStatus": {
+                "enum": [
+                    "OK",
+                    "ActionRequired",
+                    "N/A"
+                ],
+                "type": "string",
+                "description": "QA rule result status, OK - QA is done with a OK result, ActionRequired - QA is done and requires additional action, N/A - QA was never done for the item."
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceSearchResponse": {
+                "type": "object",
+                "properties": {
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemData"
+                        },
+                        "nullable": true
+                    },
+                    "continuationToken": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemData": {
+                "type": "object",
+                "properties": {
+                    "gtin": {
+                        "type": "string",
+                        "description": "Global Trade Item Number, a GS1 number used to give products and packaging a globally unique identity.",
+                        "nullable": true,
+                        "example": "07309622201028"
+                    },
+                    "informationProviderGln": {
+                        "type": "string",
+                        "description": "The Global Location Number (GLN) of the Information Provider of the trade item.",
+                        "nullable": true,
+                        "example": "7350076480033"
+                    },
+                    "informationProviderName": {
+                        "type": "string",
+                        "description": "The name of the Information Provider of the trade item.",
+                        "nullable": true
+                    },
+                    "targetMarketCountryCode": {
+                        "type": "string",
+                        "description": "The code of the country or other geographical area where the supplier has decided to make the item available for purchase, see [code list](https://gs1.se/en/guides/documentation/code-lists/t3783-target-market-country-code/).",
+                        "nullable": true
+                    },
+                    "targetMarketName": {
+                        "type": "string",
+                        "description": "The name of the country or other geographical area where the supplier has decided to make the item available for purchase, see [code list](https://gs1.se/en/guides/documentation/code-lists/t3783-target-market-country-code/).",
+                        "nullable": true
+                    },
+                    "brandOwnerGln": {
+                        "type": "string",
+                        "description": "If the product is manufactured for another company under the recipient's trademark, this is the recipient's GLN.",
+                        "nullable": true,
+                        "example": "7350076480033"
+                    },
+                    "brandOwnerName": {
+                        "type": "string",
+                        "description": "If the product is manufactured for another company under the recipient's trademark, this is the recipient's name.",
+                        "nullable": true
+                    },
+                    "descriptiveSize": {
+                        "type": "string",
+                        "description": "Deprecated, replaced by descriptiveSizeDimension.",
+                        "nullable": true,
+                        "deprecated": true
+                    },
+                    "descriptiveSizeDimension": {
+                        "type": "string",
+                        "description": "Text description of the specified size of the trade item.",
+                        "nullable": true
+                    },
+                    "brandName": {
+                        "type": "string",
+                        "description": "The brand name of the product that appears on the consumer package.",
+                        "nullable": true
+                    },
+                    "gpcCode": {
+                        "type": "string",
+                        "description": "GPC brick level code for the trade item, see [GPC browser](https://gpc-browser.gs1.org/).",
+                        "nullable": true
+                    },
+                    "isTradeItemABaseUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a base unit."
+                    },
+                    "isTradeItemAConsumerUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a consumer unit."
+                    },
+                    "isTradeItemAnOrderableUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is an orderable unit."
+                    },
+                    "isTradeItemADisplayUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a display unit."
+                    },
+                    "creationDateTime": {
+                        "type": "string",
+                        "description": "Date time when trade item information was created.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "effectiveDateTime": {
+                        "type": "string",
+                        "description": "Date time from when trade item information begins to apply.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "startAvailabilityDate": {
+                        "type": "string",
+                        "description": "Date time from when trade item is available for the buyer to order.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "consumerFirstAvailabilityDateTime": {
+                        "type": "string",
+                        "description": "Date time from when trade item is allowed to be sold to consumers.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "lastChangeDateTime": {
+                        "type": "string",
+                        "description": "Date time when trade item information was last changed.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "publicDateTime": {
+                        "type": "string",
+                        "description": "Date time when trade item information became public.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "firstShipDateTime": {
+                        "type": "string",
+                        "description": "Date time when trade item can first be delivered to the buyer.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "functionalName": {
+                        "type": "string",
+                        "description": "The category to which the product belongs.",
+                        "nullable": true
+                    },
+                    "descriptionShort": {
+                        "type": "string",
+                        "description": "A free form short length description of the trade item that can be used to identify the trade item at point of sale.",
+                        "nullable": true
+                    },
+                    "qaStatus": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemQAStatusInformation"
+                    },
+                    "itemId": {
+                        "type": "integer",
+                        "description": "The internal item id for the trade item.",
+                        "format": "int32"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Status of the trade item, published, discontinued or withdrawn. A discontinued trade item is removed from the market, a withdrawn trade item is unpublished for it's recipients. Withdrawn trade items are only returned in the product flow.",
+                        "nullable": true
+                    },
+                    "topItem": {
+                        "type": "boolean",
+                        "description": "True if the trade item is considered to be a top item, based on access rights."
+                    },
+                    "supplierArticleNumber": {
+                        "type": "string",
+                        "description": "Possible additional Trade Item Identification for the trade item.",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemQAStatus": {
+                "enum": [
+                    "OK",
+                    "ActionRequired",
+                    "Booked",
+                    "N/A"
+                ],
+                "type": "string",
+                "description": "Item QA status, OK - QA is done with a OK result, ActionRequired - QA is done and requires additional action, Booked - Item is booked for QA, N/A - QA was never done for the item."
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemQAStatusInformation": {
+                "type": "object",
+                "properties": {
+                    "digitalQAStatus": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemQAStatus"
+                    },
+                    "digitalQAStatusChangeDateTime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "measurementQAStatus": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemQAStatus"
+                    },
+                    "measurementQAStatusChangeDateTime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "barcodeQAStatus": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemQAStatus"
+                    },
+                    "barcodeQAStatusChangeDateTime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "itemQAResultStatusChangeDateTime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "The QA results will only be included if the user has a Q-lab Buyer Service or is the InformationProvider of the requested item."
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinError": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinErrorType"
+                    },
+                    "code": {
+                        "type": "string",
+                        "description": "System processing error code or numeric GDSN validation rule identifier.",
+                        "nullable": true
+                    },
+                    "definition": {
+                        "type": "string",
+                        "description": "System processing error or GDSN validation rule definition.",
+                        "nullable": true
+                    },
+                    "errorMessages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinErrorMessage"
+                        },
+                        "nullable": true
+                    },
+                    "attributeXPath": {
+                        "type": "string",
+                        "description": "XPath of the attribute that caused validation error. Only available if validation engine was able to determine specific attribute.",
+                        "nullable": true
+                    },
+                    "attributeNumber": {
+                        "type": "string",
+                        "description": "Swedish attribute T-number",
+                        "nullable": true
+                    },
+                    "attributeBmsId": {
+                        "type": "integer",
+                        "description": "Attribute BMS identifier",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "gtin": {
+                        "type": "string",
+                        "description": "Current GTIN being uploaded.",
+                        "nullable": true,
+                        "example": "07309622201028"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinErrorMessage": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "Error message",
+                        "nullable": true
+                    },
+                    "languageCode": {
+                        "type": "string",
+                        "description": "Language code in two letter format (ISO 639-1)",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinErrorType": {
+                "enum": [
+                    "VP",
+                    "GDSN"
+                ],
+                "type": "string",
+                "description": "Upload error types; VP - system validation/processing error in Validoo, GDSN - GDSN validation error"
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinRequest": {
+                "required": [
+                    "content",
+                    "operation"
+                ],
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Base64 encoded CIN XML message."
+                    },
+                    "operation": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.UploadCinOperation"
+                    },
+                    "additionalDataRecipients": {
+                        "minItems": 1,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "7350076480033"
+                        },
+                        "description": "Additional data recipients for which uploaded CIN XML message should be published.",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Api.Models.Webservice.WebserviceUploadCinResponse": {
+                "type": "object",
+                "properties": {
+                    "taskId": {
+                        "type": "string",
+                        "description": "Task identifier used to retrieve upload result.",
+                        "format": "uuid"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecord": {
+                "required": [
+                    "gtin",
+                    "gtinStatus",
+                    "isTradeItemABaseUnit",
+                    "isTradeItemAConsumerUnit",
+                    "brandName",
+                    "productName"
+                ],
+                "type": "object",
+                "properties": {
+                    "gtin": {
+                        "type": "string",
+                        "description": "Length 14, numeric only, valid check-digit.",
+                        "example": "07309622201028"
+                    },
+                    "gtinStatus": {
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Status of the GTIN record, possible values: ACTIVE, DRAFT, INACTIVE. Draft items are only allocated and not synced to GRP."
+                    },
+                    "gpcCategoryCode": {
+                        "maxLength": 8,
+                        "minLength": 8,
+                        "type": "string",
+                        "description": "Length 8, must be valid GPC code, see [GPC description](https://gs1.se/en/standards-and-services/global-product-classification-gpc/)",
+                        "nullable": true
+                    },
+                    "brandName": {
+                        "maxItems": 1,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecordMultiLanguageValue"
+                        },
+                        "description": "Brand name language is a multi-language attribute language code, length 2. Note: currently only one instance allowed as Swedish; “sv”. Not required for drafts.",
+                        "nullable": true
+                    },
+                    "subBrand": {
+                        "maxItems": 1,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecordMultiLanguageValue"
+                        },
+                        "description": "Sub brand language is a multi-language attribute language code, length 2. Note: currently only one instance allowed as Swedish; “sv”. Not required for drafts.",
+                        "nullable": true
+                    },
+                    "functionalName": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecordMultiLanguageValue"
+                        },
+                        "description": "Deprecated, use productName instead.",
+                        "nullable": true,
+                        "deprecated": true
+                    },
+                    "productName": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecordMultiLanguageValue"
+                        },
+                        "description": "A string value representing description short and a multi-language attribute language code. Not required for drafts.",
+                        "nullable": true
+                    },
+                    "variant": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecordMultiLanguageValue"
+                        },
+                        "description": "A string value representing variant. Max length 70.",
+                        "nullable": true
+                    },
+                    "productImageUrl": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecordMultiLanguageValue"
+                        },
+                        "description": "URL for the high-resolution product image that depicts the primary selling surface of the product.",
+                        "nullable": true
+                    },
+                    "netContent": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecordMeasurement"
+                        },
+                        "description": "Required for non-draft items with isTradeItemABaseUnit = FALSE.",
+                        "nullable": true
+                    },
+                    "countryOfSaleCode": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "The code (defined using the ISO-3166-1 standard) representing the country where the physical or non-physical product is intended to be sold. All 3-digit codes are supported. Not required for drafts.",
+                        "nullable": true
+                    },
+                    "isTradeItemAConsumerUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a consumer unit."
+                    },
+                    "isTradeItemABaseUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a base unit."
+                    },
+                    "child": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecordChild"
+                        },
+                        "description": "Trade item children. Required for non-draft items with isTradeItemABaseUnit = FALSE.",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": {}
+            },
+            "Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecordChild": {
+                "required": [
+                    "gtin",
+                    "quantity"
+                ],
+                "type": "object",
+                "properties": {
+                    "gtin": {
+                        "type": "string",
+                        "example": "07309622201028"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecordMeasurement": {
+                "required": [
+                    "unitCode",
+                    "value"
+                ],
+                "type": "object",
+                "properties": {
+                    "unitCode": {
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Measurement unit code, see [code list measurement unit code T3780](https://gs1.se/en/guides/documentation/codelists/t3780-measurement-unit-code/). The active codes for Sweden are marked with an ‘X’ in column “Used in Sweden”. Possibility to add local Swedish attribute “löpmeter”, but only with an additional unit code. Max length 15."
+                    },
+                    "value": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "Net content details of the product contained in the package along with its unit of measure typically printed on the label for the country or market where the product is sold. If possible, will automatically be populated for higher level items with a single child."
+            },
+            "Validoo.TradeItem.Domain.Models.Activate.Api.GtinRecordMultiLanguageValue": {
+                "required": [
+                    "language",
+                    "value"
+                ],
+                "type": "object",
+                "properties": {
+                    "language": {
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "type": "string",
+                        "description": "Language tags consist of a mandatory language code. Supported language codes are all 2-character codes listed for the ISO 639-1:2002 standard (ISO 639 Part 1)."
+                    },
+                    "value": {
+                        "minLength": 1,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Domain.Models.Activate.Api.InactivateGtinRecordRequest": {
+                "required": [
+                    "gtin"
+                ],
+                "type": "object",
+                "properties": {
+                    "gtin": {
+                        "type": "string",
+                        "example": "07309622201028"
+                    },
+                    "description": null
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Domain.Models.TradeItem.WebApiSearchRequest": {
+                "type": "object",
+                "properties": {
+                    "informationProviderGlns": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "7350076480033"
+                        },
+                        "description": "The Global Location Number (GLN) of the Information Provider of the trade item.",
+                        "nullable": true
+                    },
+                    "informationProviderNames": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "The name of the Information Provider of the trade item.",
+                        "nullable": true
+                    },
+                    "brandNames": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "The brand name of the product that appears on the consumer package.",
+                        "nullable": true
+                    },
+                    "functionalNames": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "The category to which the product belongs.",
+                        "nullable": true
+                    },
+                    "gpcCategoryCodes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Classification category code, search with Family, Class or Brick. See [GPC browser](https://gpc-browser.gs1.org/).",
+                        "nullable": true
+                    },
+                    "targetMarketCountryCodes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "The code of the country or other geographical area where the supplier has decided to make the item available for purchase, see [code list](https://gs1.se/en/guides/documentation/code-lists/t3783-target-market-country-code/).",
+                        "nullable": true
+                    },
+                    "itemStatus": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Enums.TradeItemVersionStatus"
+                        },
+                        "description": "Status of the trade item, published, discontinued or withdrawn. A discontinued trade item is removed from the market, a withdrawn trade item is unpublished for it's recipients. Withdrawn trade items are only returned in the product flow.",
+                        "nullable": true
+                    },
+                    "itemTypes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Enums.ProductType"
+                        },
+                        "description": "Type of trade item, see [Validoo.TradeItem.Api.Models.Enums.ProductType](#api=tradeitem&operation=post-tradeitem-api-tradeiteminformation-search&definition=Validoo.TradeItem.Api.Models.Enums.ProductType).",
+                        "nullable": true
+                    },
+                    "dataRecipient": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "7350076480033"
+                        },
+                        "description": "GLNs set as data recipients for the trade item.",
+                        "nullable": true
+                    },
+                    "brandOwnerGln": {
+                        "type": "string",
+                        "description": "If the product is manufactured for another company under the recipient's trademark, this is the recipient's GLN.",
+                        "nullable": true,
+                        "example": "7350076480033"
+                    },
+                    "brandOwnerName": {
+                        "maxLength": 202,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "If the product is manufactured for another company under the recipient's trademark, this is the recipient's name.",
+                        "nullable": true
+                    },
+                    "dataType": {
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.DataType"
+                        },
+                        "description": "Data type, possible values: Product or GDSN. Default value is Product. GDSN should only be used if required access exists.",
+                        "nullable": true
+                    },
+                    "onlyCurrentVersion": {
+                        "type": "boolean",
+                        "description": "Ignore possible future versions of the trade item. Default value is false. Only available in GDSN flow.",
+                        "nullable": true
+                    },
+                    "onlyTopItems": {
+                        "type": "boolean",
+                        "nullable": true
+                    },
+                    "itemQAStatus": {
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceTradeItemQAStatus"
+                        },
+                        "description": "Attributes related to QA results will only be applied and returned if the user has a Q-lab Buyer Service or is the InformationProvider of the requested item."
+                    },
+                    "itemQAResultStatusChangeDateTimeFrom": {
+                        "type": "string",
+                        "description": "Date time from a QA result has changed.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "itemQAResultStatusChangeDateTimeTo": {
+                        "type": "string",
+                        "description": "Date time to a QA result has changed.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "assetCategory": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceAssetCategory"
+                    },
+                    "itemQAResultStatus": {
+                        "$ref": "#/components/schemas/Validoo.TradeItem.Api.Models.Webservice.WebserviceQAServiceStatus"
+                    },
+                    "allergenTypeCodes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Allergen type codes registered for the trade item, see [code list](https://gs1.se/en/guides/documentation/code-lists/t4078-allergen-type-code/). The active codes for Sweden are marked with an ‘X’ in column “Used in Sweden”.",
+                        "nullable": true
+                    },
+                    "allowInvalid": {
+                        "type": "boolean",
+                        "description": "Set to true will return trade items with validation errors or trade items pending validation.",
+                        "nullable": true
+                    },
+                    "includePublicHierarchy": {
+                        "type": "boolean",
+                        "description": "Set to true will include all public items in the hierarchy. Can be used to extend access rights since items will be returned regardless of dataRecipients set. This attribute only works in the Product flow and only for users with Validoo Buyer. For other users attribute value is ignored.",
+                        "nullable": true
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Max number of trade items to return, the default limit is 10 0000.",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "continuationToken": {
+                        "type": "string",
+                        "description": "Use this to implement paging.",
+                        "nullable": true
+                    },
+                    "gtins": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "07309622201028"
+                        },
+                        "description": "Global Trade Item Number, a GS1 number used to give products and packaging a globally unique identity.",
+                        "nullable": true
+                    },
+                    "shortDescriptions": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "A free form short length description of the trade item that can be used to identify the trade item at point of sale.",
+                        "nullable": true
+                    },
+                    "isTradeItemADisplayUnit": {
+                        "type": "boolean",
+                        "description": "True if this trade item is a display unit.",
+                        "nullable": true
+                    },
+                    "lastChangeDateTimeFrom": {
+                        "type": "string",
+                        "description": "Date time from when the trade item information was last changed. Use this attribute to only retrieve changed items since intital load.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "lastChangeDateTimeTo": {
+                        "type": "string",
+                        "description": "Date time to when the trade item information was last changed. Use this attribute to only retrieve changed items since intital load.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "supplierArticleNumbers": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Possible additional Trade Item Identification for the trade item.",
+                        "nullable": true
+                    },
+                    "packagingMarkedLabelAccreditationCodes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Packaging Label accredited codes, see [code list](https://gs1.se/en/guides/documentation/code-lists/t3777-packaging-marked-label-accreditation-code/). The active codes for Sweden are marked with an ‘X’ in column “Used in Sweden”.",
+                        "nullable": true
+                    },
+                    "informationProviderGln": {
+                        "type": "string",
+                        "description": "Obsolete, use informationProviderGlns instead",
+                        "nullable": true,
+                        "example": "7350076480033"
+                    },
+                    "informationProviderName": {
+                        "maxLength": 202,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Obsolete, use informationProviderNames instead",
+                        "nullable": true
+                    },
+                    "brandName": {
+                        "maxLength": 72,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Obsolete, use brandNames instead",
+                        "nullable": true
+                    },
+                    "functionalName": {
+                        "maxLength": 37,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Obsolete, use functionalNames instead",
+                        "nullable": true
+                    },
+                    "gpcCategoryCode": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Obsolete, use gpcCategoryCodes instead",
+                        "nullable": true
+                    },
+                    "targetMarketCountryCode": {
+                        "maxLength": 3,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "Obsolete, use targetMarketCountryCodes instead",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.TradeItem.Domain.Models.TradeItem.WebApiSearchSortBy": {
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "type": "integer",
+                "format": "int32"
+            },
+            "Example_paging_mechanism_request": {
+                "type": "object",
+                "properties": {
+                    "gpcCategoryCode": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "targetMarketCountryCode": {
+                        "type": "string"
+                    },
+                    "dataType": {
+                        "type": "string"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "continuationToken": {
+                        "type": "string"
+                    }
+                },
+                "x-apim-schema-name": "Example paging mechanism request"
+            },
+            "Example_paging_mechanism_response": {
+                "type": "object",
+                "properties": {
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "gtin",
+                                "informationProviderGln",
+                                "informationProviderName",
+                                "targetMarketCountryCode",
+                                "targetMarketName",
+                                "brandName",
+                                "descriptiveSizeDimension",
+                                "gpcCode",
+                                "isTradeItemABaseUnit",
+                                "isTradeItemAConsumerUnit",
+                                "isTradeItemAnOrderableUnit",
+                                "isTradeItemADisplayUnit",
+                                "creationDateTime",
+                                "effectiveDateTime",
+                                "startAvailabilityDate",
+                                "lastChangeDateTime",
+                                "functionalName",
+                                "itemId",
+                                "status",
+                                "topItem"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "gtin": {
+                                    "type": "string"
+                                },
+                                "informationProviderGln": {
+                                    "type": "string"
+                                },
+                                "informationProviderName": {
+                                    "type": "string"
+                                },
+                                "targetMarketCountryCode": {
+                                    "type": "string"
+                                },
+                                "targetMarketName": {
+                                    "type": "string"
+                                },
+                                "brandName": {
+                                    "type": "string"
+                                },
+                                "descriptiveSizeDimension": {
+                                    "type": "string"
+                                },
+                                "gpcCode": {
+                                    "type": "string"
+                                },
+                                "isTradeItemABaseUnit": {
+                                    "type": "boolean"
+                                },
+                                "isTradeItemAConsumerUnit": {
+                                    "type": "boolean"
+                                },
+                                "isTradeItemAnOrderableUnit": {
+                                    "type": "boolean"
+                                },
+                                "isTradeItemADisplayUnit": {
+                                    "type": "boolean"
+                                },
+                                "creationDateTime": {
+                                    "type": "string"
+                                },
+                                "effectiveDateTime": {
+                                    "type": "string"
+                                },
+                                "startAvailabilityDate": {
+                                    "type": "string"
+                                },
+                                "lastChangeDateTime": {
+                                    "type": "string"
+                                },
+                                "publicDateTime": {
+                                    "type": "string"
+                                },
+                                "functionalName": {
+                                    "type": "string"
+                                },
+                                "descriptionShort": {
+                                    "type": "string"
+                                },
+                                "itemId": {
+                                    "type": "integer"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "topItem": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "continuationToken": {
+                        "type": "string"
+                    }
+                },
+                "x-apim-schema-name": "Example paging mechanism response"
+            }
+        }
+    }
+}

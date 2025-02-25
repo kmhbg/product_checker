@@ -1,0 +1,180 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Authentication",
+        "description": "Request tokens. More information about authentication can be found [here](https://developer.gs1.se/api-get-started).",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://validoopwe-apimanagement.azure-api.net"
+        }
+    ],
+    "paths": {
+        "/connect/token": {
+            "post": {
+                "tags": [
+                    "Tokens"
+                ],
+                "summary": "Request token",
+                "description": "Request token for an API user. Below you can find both request and refresh token examples. \n- The access token can expire, and the token response includes an expires_in property in seconds. Currently the access token is valid for 3600 seconds and the refresh token for 7200 seconds. The request should state the relevant scopes intended for use. After initial token request, a new access token should only be requested when the old one is about to expire or use refresh tokens. \n- Request to get a refresh token by using the same token endpoint as when requesting a token. Include the string value of property refresh_token from the initial token response. A new access and refresh token will be issued. A refresh token can only be used once. \n\n Suggested implementation: \n1. Request access token using API credentials and with the \"offline_access\" scope included. The response will contain both an access token and a refresh token. \n2. Make API requests using the access token for as long as it's valid or until it's about to expire. \n3. Request new access token using your refresh token. The response will again contain both an access token and a refresh token. \n4. Repeat steps 2 and 3.\n\n### Request endpoint for integration\nToken endpoints are located on the Technical Integration page as a logged in user in [MyGS1](https://my.gs1.se).",
+                "operationId": "request-token",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Should be set as \"application/x-www-form-urlencoded\"",
+                        "required": true,
+                        "schema": {
+                            "enum": [
+                                "application/x-www-form-urlencoded"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Request_token_example"
+                            },
+                            "example": {
+                                "grant_type": "password",
+                                "client_id": "clientId",
+                                "client_secret": "clientSecret",
+                                "scope": "apiToUse offline_access",
+                                "username": "apiUsername",
+                                "password": "apiUserPassword"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Request_token_response_example"
+                                },
+                                "example": {
+                                    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjJFMEE0NDEzRTg0MkVEMjY",
+                                    "expires_in": 3600,
+                                    "token_type": "Bearer",
+                                    "refresh_token": "bc8090f1fca8ff1101763176bee7ed4b84dd44f10b4dbf61a26",
+                                    "scope": "apiToUse offline_access"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Request_token_example": {
+                "type": "object",
+                "properties": {
+                    "grant_type": {
+                        "type": "string",
+                        "description": "For request token request the grant_type must always be \"password\"."
+                    },
+                    "client_id": {
+                        "type": "string",
+                        "description": "The clientId found on the Technical Integration page in MyGS1."
+                    },
+                    "client_secret": {
+                        "type": "string",
+                        "description": "The clientSecret found on the Technical Integration page in MyGS1."
+                    },
+                    "scope": {
+                        "type": "string",
+                        "description": "Scope(s) to use this token with. To get a refresh token scope \"offline_access\" must be included. Available scopes can be found [here](https://developer.gs1.se/api-get-started)."
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "API user name"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "API user's password, not visible in MyGS1, sent out by text message on request."
+                    }
+                },
+                "x-apim-schema-name": "Request token example"
+            },
+            "Request_token_response_example": {
+                "type": "object",
+                "properties": {
+                    "access_token": {
+                        "type": "string",
+                        "description": "The access token string as issued by the authorization server."
+                    },
+                    "expires_in": {
+                        "type": "integer",
+                        "description": "Duration of time the access token is granted for in seconds."
+                    },
+                    "token_type": {
+                        "type": "string",
+                        "description": "The type of token this is, string “Bearer”."
+                    },
+                    "refresh_token": {
+                        "type": "string",
+                        "description": "The refresh token string as issued by the authorization server."
+                    },
+                    "scope": {
+                        "type": "string",
+                        "description": "Scope(s) the token is issued for."
+                    }
+                },
+                "x-apim-schema-name": "Request token response example"
+            },
+            "Refresh_token_example": {
+                "type": "object",
+                "properties": {
+                    "grant_type": {
+                        "type": "string",
+                        "description": "For refresh token request the grant_type must always be \"refresh_token\"."
+                    },
+                    "client_id": {
+                        "type": "string",
+                        "description": "The clientId found on the Technical Integration page in MyGS1."
+                    },
+                    "client_secret": {
+                        "type": "string",
+                        "description": "The clientSecret found on the Technical Integration page in MyGS1."
+                    },
+                    "refresh_token": {
+                        "type": "string",
+                        "description": "The refresh token previously issued to the client."
+                    }
+                },
+                "x-apim-schema-name": "Refresh token example"
+            },
+            "Refresh_token_response_example": {
+                "type": "object",
+                "properties": {
+                    "access_token": {
+                        "type": "string",
+                        "description": "The access token string as issued by the authorization server."
+                    },
+                    "expires_in": {
+                        "type": "integer",
+                        "description": "Duration of time the access token is granted for in seconds."
+                    },
+                    "token_type": {
+                        "type": "string",
+                        "description": "The type of token this is, string “Bearer”."
+                    },
+                    "refresh_token": {
+                        "type": "string",
+                        "description": "The refresh token string as issued by the authorization server."
+                    }
+                },
+                "x-apim-schema-name": "Refresh token response example"
+            }
+        }
+    }
+}

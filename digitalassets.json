@@ -1,0 +1,1364 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "digitalassets.api",
+        "description": "2024-05-27 Added attribute descriptionShort to Search endpoint",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://validoopwe-apimanagement.azure-api.net/digitalassets"
+        }
+    ],
+    "paths": {
+        "/digitalassets.api/AssetsApi/{assetId}": {
+            "delete": {
+                "tags": [
+                    "UploadAssets"
+                ],
+                "summary": "/digitalassets.api/AssetsApi/{assetId}",
+                "description": "### General\nTo publish digital assets, create a validation order with an uploaded asset which then can be shared with buyers.\n\n### Endpoint details\nDelete an uploaded image by using the assetId returned in upload request.\n- Only assets with status ‘Waiting for QA’ can be deleted.\n\n### Request endpoint for integration\n<span style=\"color: #D04040\">DEL</span> https<nolink>://services.validoo.se/digitalassets.api/AssetsApi/{assetId}",
+                "operationId": "delete-digitalassets-api-assetsapi-assetid",
+                "parameters": [
+                    {
+                        "name": "assetId",
+                        "in": "path",
+                        "description": "Format - int32.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "412": {
+                        "description": "Client Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "example": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/digitalassets.api/AssetsApi": {
+            "post": {
+                "tags": [
+                    "UploadAssets"
+                ],
+                "summary": "/digitalassets.api/AssetsApi",
+                "description": "### General\nTo publish digital assets, create a validation order with an uploaded asset which later can be shared with buyers.\n\n### Endpoint details\nUpload a digital asset.\n- Upload an asset as a QA order. The asset will either be approved (OK) or rejected (NOK), this is a manual process and nothing that can be tracked via Upload API. If an image is rejected customer should monitor the image status in the interface.\n- If autopublication is set to true, the asset will automatically be published as soon as the image is OK and public date is reached. Addressed trade items will be accessible prior to public access date. \n- If newDesign is set to true, the asset will not be shared with or accessible to anyone until the assets’ public access date is reached. \n- If attribute assetPublicAccessDate is excluded from request, current date is automatically set for the asset. \n- After QA has been performed, always request the image via 'GetAssets' to replace your original, image metadata has been updated for easier image handling. \n- Accepted fileformat is LZW compressed tiff, jpeg, png, eps, psd, psb and zip.\n- The filename should be according to the GDSN standard with asset properties defined. The available properties are listed below. Marketing images should include the file extension in the file name. Planogram images should make use of the planogram view indicator instead of file extension. See image specification as pdf [here](https://www.gs1.org/sites/default/files/docs/gdsn/Product_Image_Specification.pdf).\n- At least one side of the asset is required to be minimum length of 2400px.\n- Only “ecommerce” tag exists today.\n- If a zip-file is chosen as upload format, make sure the parameters are identical for all assets within the zip.\n\n### Request endpoint for integration\n<span style=\"color: #0000FF\">POST</span> https<nolink>://services.validoo.se/digitalassets.api/AssetsApi",
+                "operationId": "post-digitalassets-api-assetsapi",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.ApiUploadRequest"
+                            },
+                            "example": {
+                                "FileName": "string",
+                                "InformationProviderGln": "string",
+                                "TargetMarketCountryCode": "string",
+                                "Asset": "string",
+                                "AssetCategory": "productImage",
+                                "FieldofApplication": "None",
+                                "AssetPublicAccessDate": "string",
+                                "AutoPublication": true,
+                                "NewDesign": true,
+                                "Tags": [
+                                    "string"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.ApiUploadResponse"
+                                },
+                                "example": {
+                                    "AssetIds": [
+                                        0
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "412": {
+                        "description": "Client Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Client Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": [
+                                    "string"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/digitalassets.api/AssetsApi/digitalAssetsByItem": {
+            "post": {
+                "tags": [
+                    "GetAssets"
+                ],
+                "summary": "/digitalassets.api/AssetsApi/digitalAssetsByItem",
+                "description": "### General\nRequest images for a trade item. Search with GTIN or other trade item attributes to get requested assets. Default main image for a trade item can also be retrieved. Please note that information retrieved from the 'GetAssets' endpoints must be stored locally. The customer product must not depend on direct integration with any 'GetAssets' endpoints.\n\n### Endpoint details\nSearch digital assets by trade item. \n- The least required parameters in request body is gtin, informationProviderGln and targetMarketCountryCode.\n- The asset is returned as a base64 string in the output parameter Blob. The string needs to be converted to an image.\n\n*Note: Planogram images do not have angleIdentifier, imageType, state or tags metadata.*\n\n### Request endpoint for integration\n<span style=\"color: #0000FF\">POST</span> https<nolink>://services.validoo.se/digitalassets.api/AssetsApi/digitalAssetsByItem",
+                "operationId": "post-digitalassets-api-assetsapi-digitalassetsbyitem",
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.DigitalAssetsByTradeItemRequest"
+                            },
+                            "example": {
+                                "GTIN": "07309622201028",
+                                "InformationProviderGln": "7350076480033",
+                                "TargetMarketCountryCode": "string",
+                                "AssetCategory": "productImage",
+                                "FieldOfApplication": "string",
+                                "AngleIdentifier": "string",
+                                "FacingIndicator": "NotApplicable",
+                                "ImageType": "None",
+                                "State": "string",
+                                "ImagePublicAccessDateFrom": "string",
+                                "ImagePublicAccessDateTo": "string",
+                                "ImageAvailabilityDateBuyerFrom": "string",
+                                "ImageAvailabilityDateBuyerTo": "string",
+                                "ImageApprovalDateFrom": "string",
+                                "ImageApprovalDateTo": "string",
+                                "Tags": [
+                                    "string"
+                                ],
+                                "FileFormat": "JPG",
+                                "ImageSize": 0,
+                                "ImageResolution": 0,
+                                "Limit": 0,
+                                "Skip": 0,
+                                "SortBy": "string",
+                                "SortAscending": true
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.DigitalAssetsByTradeItemRequest"
+                            },
+                            "example": {
+                                "GTIN": "07309622201028",
+                                "InformationProviderGln": "7350076480033",
+                                "TargetMarketCountryCode": "string",
+                                "AssetCategory": "productImage",
+                                "FieldOfApplication": "string",
+                                "AngleIdentifier": "string",
+                                "FacingIndicator": "NotApplicable",
+                                "ImageType": "None",
+                                "State": "string",
+                                "ImagePublicAccessDateFrom": "string",
+                                "ImagePublicAccessDateTo": "string",
+                                "ImageAvailabilityDateBuyerFrom": "string",
+                                "ImageAvailabilityDateBuyerTo": "string",
+                                "ImageApprovalDateFrom": "string",
+                                "ImageApprovalDateTo": "string",
+                                "Tags": [
+                                    "string"
+                                ],
+                                "FileFormat": "JPG",
+                                "ImageSize": 0,
+                                "ImageResolution": 0,
+                                "Limit": 0,
+                                "Skip": 0,
+                                "SortBy": "string",
+                                "SortAscending": true
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.DigitalAssetsByTradeItemRequest"
+                            },
+                            "example": {
+                                "GTIN": "07309622201028",
+                                "InformationProviderGln": "7350076480033",
+                                "TargetMarketCountryCode": "string",
+                                "AssetCategory": "productImage",
+                                "FieldOfApplication": "string",
+                                "AngleIdentifier": "string",
+                                "FacingIndicator": "NotApplicable",
+                                "ImageType": "None",
+                                "State": "string",
+                                "ImagePublicAccessDateFrom": "string",
+                                "ImagePublicAccessDateTo": "string",
+                                "ImageAvailabilityDateBuyerFrom": "string",
+                                "ImageAvailabilityDateBuyerTo": "string",
+                                "ImageApprovalDateFrom": "string",
+                                "ImageApprovalDateTo": "string",
+                                "Tags": [
+                                    "string"
+                                ],
+                                "FileFormat": "JPG",
+                                "ImageSize": 0,
+                                "ImageResolution": 0,
+                                "Limit": 0,
+                                "Skip": 0,
+                                "SortBy": "string",
+                                "SortAscending": true
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.DigitalAssetsByTradeItemRequest"
+                            },
+                            "example": {
+                                "GTIN": "07309622201028",
+                                "InformationProviderGln": "7350076480033",
+                                "TargetMarketCountryCode": "string",
+                                "AssetCategory": "productImage",
+                                "FieldOfApplication": "string",
+                                "AngleIdentifier": "string",
+                                "FacingIndicator": "NotApplicable",
+                                "ImageType": "None",
+                                "State": "string",
+                                "ImagePublicAccessDateFrom": "string",
+                                "ImagePublicAccessDateTo": "string",
+                                "ImageAvailabilityDateBuyerFrom": "string",
+                                "ImageAvailabilityDateBuyerTo": "string",
+                                "ImageApprovalDateFrom": "string",
+                                "ImageApprovalDateTo": "string",
+                                "Tags": [
+                                    "string"
+                                ],
+                                "FileFormat": "JPG",
+                                "ImageSize": 0,
+                                "ImageResolution": 0,
+                                "Limit": 0,
+                                "Skip": 0,
+                                "SortBy": "string",
+                                "SortAscending": true
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.DigitalAssetsItemResponse"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "Blob": "string",
+                                        "AssetCategory": "string",
+                                        "FieldOfApplication": "None",
+                                        "AngleIdentifier": "string",
+                                        "FacingIndicator": 0,
+                                        "ImageType": "None",
+                                        "State": "string",
+                                        "ImagePublicAccessDate": "string",
+                                        "ImageAvailabilityDateBuyer": "string",
+                                        "ImageQualityAssuranceDate": "string",
+                                        "ImageApprovalDate": "string",
+                                        "Tags": [
+                                            "string"
+                                        ],
+                                        "FileName": "string",
+                                        "FileFormat": "string",
+                                        "ImageSize": 0,
+                                        "ImageResolution": 0,
+                                        "ImageSource": "string",
+                                        "ColorMode": "string",
+                                        "Ppi": 0,
+                                        "DigitalAssetId": 0
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Client Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/digitalassets.api/AssetsApi/digitalAssets": {
+            "get": {
+                "tags": [
+                    "GetAssets"
+                ],
+                "summary": "/digitalassets.api/AssetsApi/digitalAssets",
+                "description": "### General\nRequest images for a trade item. Search with GTIN or other trade item attributes to get requested assets. Default main image for a trade item can also be retrieved. Please note that information retrieved from the 'GetAssets' endpoints must be stored locally. The customer product must not depend on direct integration with any 'GetAssets' endpoints. \n\n### Endpoint details\nGet digital asset by internal id which is returned via the Search endpoint.  The asset is returned as a base64 string in the output parameter blob and needs to be converted to an image.\n\n*Note: Planogram images do not have angleIdentifier, imageType, state or tags metadata.*\n\n### Request endpoint for integration\n<span style=\"color: #038A00\">GET</span> https<nolink>://services.validoo.se/digitalassets.api/AssetsApi/digitalAssets",
+                "operationId": "get-digitalassets-api-assetsapi-digitalassets-digitalassetid-digitalassetid",
+                "parameters": [
+                    {
+                        "name": "digitalAssetId",
+                        "in": "query",
+                        "description": "Internal asset id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "assetCategory",
+                        "in": "query",
+                        "description": "Available values: productImage",
+                        "schema": {
+                            "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.AssetUploadCategory"
+                        }
+                    },
+                    {
+                        "name": "fileFormat",
+                        "in": "query",
+                        "description": "Available values: JPG, TIF, PNG",
+                        "schema": {
+                            "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.ContentTypeEnum"
+                        }
+                    },
+                    {
+                        "name": "imageResolution",
+                        "in": "query",
+                        "description": "Format - int32. If not set, original resolution will be used",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "imageSize",
+                        "in": "query",
+                        "description": "Format - int32. If not set, original size will be used",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.DigitalAssetsItemResponse"
+                                },
+                                "example": {
+                                    "Blob": "string",
+                                    "AssetCategory": "string",
+                                    "FieldOfApplication": "None",
+                                    "AngleIdentifier": "string",
+                                    "FacingIndicator": 0,
+                                    "ImageType": "None",
+                                    "State": "string",
+                                    "ImagePublicAccessDate": "string",
+                                    "ImageAvailabilityDateBuyer": "string",
+                                    "ImageQualityAssuranceDate": "string",
+                                    "ImageApprovalDate": "string",
+                                    "Tags": [
+                                        "string"
+                                    ],
+                                    "FileName": "string",
+                                    "FileFormat": "string",
+                                    "ImageSize": 0,
+                                    "ImageResolution": 0,
+                                    "ImageSource": "string",
+                                    "ColorMode": "string",
+                                    "Ppi": 0,
+                                    "DigitalAssetId": 0
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Client Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": [
+                                    "string"
+                                ]
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/digitalassets.api/AssetsApi/mainImageForItem": {
+            "get": {
+                "tags": [
+                    "GetAssets"
+                ],
+                "summary": "/digitalassets.api/AssetsApi/mainImageForItem",
+                "description": "### General\nRequest images for a trade item. Search with GTIN or other trade item attributes to get requested assets. Default main image for a trade item can also be retrieved. Please note that information retrieved from the 'GetAssets' endpoints must be stored locally. The customer product must not depend on direct integration with any 'GetAssets' endpoints. \n\n\n### Endpoint details\nGet the main image for the item. This is the image visible in the product overview in Validoo. The main image is selected based on the following order:\n1.\tMarketing image, Facing Front, Angle Left\n2.\tMarketing image, Facing Front, Angle Center\n3.\tMarketing image, Facing Front, Angle Right\n4.\tMarketing image, Facing Front, Angle No Plunge\n5.\tMarketing image, other facings\n6.\tPlanogram image, Facing Front\n7.\tPlanogram image, Facing Top\n8.\tPlanogram image, other facings\n\nThe asset is returned as a base64 string in the output parameter Blob. The string needs to be converted to an image.\n\n*Note: Planogram images do not have angleIdentifier, imageType, state or tags metadata.*\n\n### Request endpoint for integration\n<span style=\"color: #038A00\">GET</span> https<nolink>://services.validoo.se/digitalassets.api/AssetsApi/mainImageForItem",
+                "operationId": "get-digitalassets-api-assetsapi-mainimageforitem-gtin-gtin-informationprovid",
+                "parameters": [
+                    {
+                        "name": "gtin",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "informationProviderGln",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "targetMarketCountryCode",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "assetCategory",
+                        "in": "query",
+                        "description": "Available values: productImage",
+                        "schema": {
+                            "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.AssetUploadCategory"
+                        }
+                    },
+                    {
+                        "name": "fileFormat",
+                        "in": "query",
+                        "description": "Available values: JPG, TIF, PNG",
+                        "schema": {
+                            "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.ContentTypeEnum"
+                        }
+                    },
+                    {
+                        "name": "imageResolution",
+                        "in": "query",
+                        "description": "Format - int32. If not set, original resolution will be used",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "imageSize",
+                        "in": "query",
+                        "description": "Format - int32. If not set, original size will be used",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.DigitalAssetsItemResponse"
+                                },
+                                "example": {
+                                    "Blob": "string",
+                                    "AssetCategory": "string",
+                                    "FieldOfApplication": "None",
+                                    "AngleIdentifier": "string",
+                                    "FacingIndicator": 0,
+                                    "ImageType": "None",
+                                    "State": "string",
+                                    "ImagePublicAccessDate": "string",
+                                    "ImageAvailabilityDateBuyer": "string",
+                                    "ImageQualityAssuranceDate": "string",
+                                    "ImageApprovalDate": "string",
+                                    "Tags": [
+                                        "string"
+                                    ],
+                                    "FileName": "string",
+                                    "FileFormat": "string",
+                                    "ImageSize": 0,
+                                    "ImageResolution": 0,
+                                    "ImageSource": "string",
+                                    "ColorMode": "string",
+                                    "Ppi": 0,
+                                    "DigitalAssetId": 0
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/digitalassets.api/AssetsApi/search": {
+            "post": {
+                "tags": [
+                    "GetAssets"
+                ],
+                "summary": "/digitalassets.api/AssetsApi/search",
+                "description": "### General\nRequest images for a trade item. Search with GTIN or other trade item attributes to get requested assets. Default main image for a trade item can also be retrieved. Please note that information retrieved from the 'GetAssets' endpoints must be stored locally. The customer product must not depend on direct integration with any 'GetAssets' endpoints. \n\n\n### Endpoint details\nSearch for digital assets.\n- Depending on input parameters Search can return a list and these will be iteratively returned.\n- If limit is not set, there is a default limit set.\n- Parameters itemType, assetCategory, fieldOfApplication, angleIdentifier, facingIndicator, imageType, state and tags are enumerations listed below.\n\n*Note: Planogram images do not have angleIdentifier, imageType, state or tags metadata.*\n\n### Request endpoint for integration\n<span style=\"color: #0000FF\">POST</span> https<nolink>://services.validoo.se/digitalassets.api/AssetsApi/search",
+                "operationId": "post-digitalassets-api-assetsapi-search",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.DigitalAssetsSearchRequest"
+                            },
+                            "example": {
+                                "GTINs": [
+                                    "07309622201028"
+                                ],
+                                "InformationProviderGln": [
+                                    "7350076480033"
+                                ],
+                                "InformationProviderName": "string",
+                                "TargetMarketCountryCode": "string",
+                                "BrandName": "string",
+                                "FunctionalName": "string",
+                                "DescriptionShort": "string",
+                                "GpcCategoryCode": "string",
+                                "ItemTypes": [
+                                    "Consumer"
+                                ],
+                                "AssetCategory": "productImage",
+                                "FieldOfApplication": "string",
+                                "AngleIdentifier": "string",
+                                "FacingIndicator": "NotApplicable",
+                                "ImageType": "None",
+                                "State": "string",
+                                "ImagePublicAccessDateFrom": "string",
+                                "ImagePublicAccessDateTo": "string",
+                                "ImageAvailabilityDateBuyerFrom": "string",
+                                "ImageAvailabilityDateBuyerTo": "string",
+                                "ImageApprovalDateFrom": "string",
+                                "ImageApprovalDateTo": "string",
+                                "Tags": [
+                                    "string"
+                                ],
+                                "Limit": 0,
+                                "Skip": 0,
+                                "SortBy": "string",
+                                "SortAscending": true
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.DigitalAssetsSearchResponse"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "GTIN": "string",
+                                        "InformationProviderGln": "string",
+                                        "InformationProviderName": "string",
+                                        "TargetMarketCountryCode": "string",
+                                        "TargetMarketName": "string",
+                                        "BrandName": "string",
+                                        "GpcCode": "string",
+                                        "AssetCategory": "string",
+                                        "FieldOfApplication": "None",
+                                        "AngleIdentifier": "string",
+                                        "FacingIndicator": 0,
+                                        "ImageType": "None",
+                                        "State": "string",
+                                        "ImagePublicAccessDate": "string",
+                                        "ImageAvailabilityDateBuyer": "string",
+                                        "ImageQualityAssuranceDate": "string",
+                                        "ImageApprovalDate": "string",
+                                        "Tags": [
+                                            "string"
+                                        ],
+                                        "DigitalAssetId": 0
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Validoo.Api.Models.Errors.ErrorInformation": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "params": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "exception": {
+                        "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ExceptionInformation"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Api.Models.Errors.ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "traceId": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ErrorInformation"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Api.Models.Errors.ExceptionData": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "value": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.Api.Models.Errors.ExceptionInformation": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "stackTrace": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ExceptionData"
+                        },
+                        "nullable": true
+                    },
+                    "innerException": {
+                        "$ref": "#/components/schemas/Validoo.Api.Models.Errors.ExceptionInformation"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.DigitalAssets.Api.Models.ApiUploadRequest": {
+                "required": [
+                    "Asset",
+                    "AssetCategory",
+                    "FieldofApplication",
+                    "FileName",
+                    "InformationProviderGln",
+                    "TargetMarketCountryCode"
+                ],
+                "type": "object",
+                "properties": {
+                    "FileName": {
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "The filename should be according to the GDSN standard with asset properties defined. Marketing images should include the file extension in the file name. Planogram images should make use of the planogram view indicator instead of file extension. Read more in Endpoint details."
+                    },
+                    "InformationProviderGln": {
+                        "maxLength": 13,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Supplier GLN uploading the asset"
+                    },
+                    "TargetMarketCountryCode": {
+                        "maxLength": 3,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Target market country code, taken from [T3783 code list](https://gs1.se/en/guides/documentation/code-lists/t3783-target-market-country-code/)"
+                    },
+                    "Asset": {
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "The asset as a base64 string"
+                    },
+                    "AssetCategory": {
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.AssetUploadCategory"
+                        },
+                        "description": "Currently only productImage exists."
+                    },
+                    "FieldofApplication": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.FieldOfApplicationEnum"
+                    },
+                    "AssetPublicAccessDate": {
+                        "type": "string",
+                        "description": "If empty or excluded, current date is automatically set.",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "AutoPublication": {
+                        "type": "boolean",
+                        "nullable": true
+                    },
+                    "NewDesign": {
+                        "type": "boolean",
+                        "nullable": true
+                    },
+                    "Tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.DigitalAssets.Api.Models.ApiUploadResponse": {
+                "type": "object",
+                "properties": {
+                    "AssetIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.DigitalAssets.Api.Models.AssetUploadCategory": {
+                "enum": [
+                    "productImage"
+                ],
+                "type": "string",
+                "description": "The only one available today, image with TII "
+            },
+            "Validoo.DigitalAssets.Api.Models.ContentTypeEnum": {
+                "enum": [
+                    "JPG",
+                    "TIF",
+                    "PNG"
+                ],
+                "type": "string"
+            },
+            "Validoo.DigitalAssets.Api.Models.DigitalAssetsByTradeItemRequest": {
+                "required": [
+                    "GTIN",
+                    "InformationProviderGln",
+                    "TargetMarketCountryCode"
+                ],
+                "type": "object",
+                "properties": {
+                    "GTIN": {
+                        "type": "string",
+                        "example": "07309622201028"
+                    },
+                    "InformationProviderGln": {
+                        "type": "string",
+                        "example": "7350076480033"
+                    },
+                    "TargetMarketCountryCode": {
+                        "maxLength": 3,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "AssetCategory": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.AssetUploadCategory"
+                    },
+                    "FieldOfApplication": {
+                        "maxLength": 10,
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "AngleIdentifier": {
+                        "maxLength": 10,
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "FacingIndicator": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.FacingIndicatorEnum"
+                    },
+                    "ImageType": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.ImageTypesEnum"
+                    },
+                    "State": {
+                        "maxLength": 1,
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "ImagePublicAccessDateFrom": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImagePublicAccessDateTo": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageAvailabilityDateBuyerFrom": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageAvailabilityDateBuyerTo": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageApprovalDateFrom": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageApprovalDateTo": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "Tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "FileFormat": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.ContentTypeEnum"
+                    },
+                    "ImageSize": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "ImageResolution": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "Limit": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "Skip": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "SortBy": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "SortAscending": {
+                        "type": "boolean",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.DigitalAssets.Api.Models.DigitalAssetsItemResponse": {
+                "type": "object",
+                "properties": {
+                    "Blob": {
+                        "type": "string",
+                        "format": "byte",
+                        "nullable": true
+                    },
+                    "AssetCategory": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "FieldOfApplication": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.FieldOfApplicationEnum"
+                    },
+                    "AngleIdentifier": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "FacingIndicator": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "ImageType": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.ImageTypesEnum"
+                    },
+                    "State": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "ImagePublicAccessDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageAvailabilityDateBuyer": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageQualityAssuranceDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageApprovalDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "Tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "FileName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "FileFormat": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "ImageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "ImageResolution": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "ImageSource": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "ColorMode": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "Ppi": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "DigitalAssetId": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.DigitalAssets.Api.Models.DigitalAssetsSearchRequest": {
+                "type": "object",
+                "properties": {
+                    "GTINs": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "07309622201028"
+                        },
+                        "nullable": true
+                    },
+                    "InformationProviderGln": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "7350076480033"
+                        },
+                        "nullable": true
+                    },
+                    "InformationProviderName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "TargetMarketCountryCode": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "BrandName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "FunctionalName": {
+                        "type": "string",
+                        "description": "The category to which the product belongs.",
+                        "nullable": true
+                    },
+                    "DescriptionShort": {
+                        "type": "string",
+                        "description": "A free form short length description of the trade item that can be used to identify the trade item at point of sale.",
+                        "nullable": true
+                    },
+                    "GpcCategoryCode": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "ItemTypes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.ItemTypeEnum"
+                        },
+                        "nullable": true
+                    },
+                    "AssetCategory": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.AssetUploadCategory"
+                    },
+                    "FieldOfApplication": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "AngleIdentifier": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "FacingIndicator": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.FacingIndicatorEnum"
+                    },
+                    "ImageType": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.ImageTypesEnum"
+                    },
+                    "State": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "ImagePublicAccessDateFrom": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImagePublicAccessDateTo": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageAvailabilityDateBuyerFrom": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageAvailabilityDateBuyerTo": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageApprovalDateFrom": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageApprovalDateTo": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "Tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "Limit": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "Skip": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "SortBy": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "SortAscending": {
+                        "type": "boolean",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.DigitalAssets.Api.Models.DigitalAssetsSearchResponse": {
+                "type": "object",
+                "properties": {
+                    "GTIN": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "InformationProviderGln": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "InformationProviderName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "TargetMarketCountryCode": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "TargetMarketName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "BrandName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "GpcCode": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "AssetCategory": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "FieldOfApplication": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.FieldOfApplicationEnum"
+                    },
+                    "AngleIdentifier": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "FacingIndicator": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "ImageType": {
+                        "$ref": "#/components/schemas/Validoo.DigitalAssets.Api.Models.ImageTypesEnum"
+                    },
+                    "State": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "ImagePublicAccessDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageAvailabilityDateBuyer": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageQualityAssuranceDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "ImageApprovalDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "Tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "DigitalAssetId": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Validoo.DigitalAssets.Api.Models.FacingIndicatorEnum": {
+                "enum": [
+                    "NotApplicable",
+                    "Front",
+                    "Left",
+                    "Top",
+                    "Back",
+                    "Right",
+                    "Bottom",
+                    "None"
+                ],
+                "type": "string"
+            },
+            "Validoo.DigitalAssets.Api.Models.FieldOfApplicationEnum": {
+                "enum": [
+                    "None",
+                    "Planogram",
+                    "Marketing"
+                ],
+                "type": "string"
+            },
+            "Validoo.DigitalAssets.Api.Models.ImageTypesEnum": {
+                "enum": [
+                    "None",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H",
+                    "J",
+                    "K",
+                    "L",
+                    "M"
+                ],
+                "type": "string"
+            },
+            "Validoo.DigitalAssets.Api.Models.ItemTypeEnum": {
+                "enum": [
+                    "Consumer",
+                    "Base",
+                    "Display",
+                    "Orderable"
+                ],
+                "type": "string"
+            }
+        }
+    }
+}

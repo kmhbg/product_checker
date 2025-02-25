@@ -1,0 +1,24 @@
+gs1-monitor/
+├── app/
+│   ├── __init__.py
+│   ├── web_status.py
+│   ├── product_folder_monitor.py
+│   ├── gs1_digital_assets.py
+│   ├── image_validator.py
+│   └── templates/
+│       └── status.html
+├── docker/
+│   ├── Dockerfile
+│   └── nginx/
+│       └── conf.d/
+│           └── default.conf
+├── scripts/
+│   ├── install.sh
+│   └── backup.sh
+├── config/
+│   ├── .env.example
+│   └── .env
+├── docker-compose.yml
+├── docker-compose.prod.yml
+├── README.md
+└── Manual.md 

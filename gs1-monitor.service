@@ -1,0 +1,13 @@
+[Unit]
+Description=GS1 Digital Assets Monitor
+After=docker.service
+Requires=docker.service
+
+[Service]
+WorkingDirectory=/path/to/app
+ExecStart=/usr/local/bin/docker-compose -f docker-compose.prod.yml up
+ExecStop=/usr/local/bin/docker-compose -f docker-compose.prod.yml down
+Restart=always
+
+[Install]
+WantedBy=multi-user.target 
